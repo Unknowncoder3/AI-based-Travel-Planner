@@ -121,6 +121,7 @@ http://127.0.0.1:5000/
 ```
 
 ---
+🔗 Live Demo: https:https://globetrotter.streamlit.app/
 
 ## 🧪 Example Usage
 
