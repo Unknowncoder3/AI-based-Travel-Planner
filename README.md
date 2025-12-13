@@ -1,73 +1,155 @@
-AI Travel Planner Assistant 🌍🧠
 
-AI Travel Planner is an intelligent travel planning application that helps users create personalized trip itineraries using large language models (LLMs). The assistant supports both text and voice input, maintains conversation history, and generates structured travel plans including routes, attractions, food suggestions, and practical travel tips.
+# 🌍 AI-Based Travel Planner
 
-The system leverages LangChain with Ollama (Mistral / LLaMA) for local LLM inference and is built using Python with a modern, animated UI.
+An **AI-powered travel planning web application** that generates **personalized travel itineraries** based on user preferences such as destination, budget, trip duration, and interests. The system leverages data processing and intelligent recommendation logic to help users plan efficient and enjoyable trips.
 
-✨ Features
+---
 
-🗺️ Personalized travel planning (origin → destination)
+## 🚀 Features
 
-🧠 LLM-powered itinerary generation (routes, hidden gems, food & culture)
+* 🧠 **Personalized Itinerary Generation** based on:
 
-🎤 Voice input support (Speech Recognition)
+  * Destination
+  * Budget
+  * Trip duration
+  * User interests
+* 🌦️ **Real-time Weather Integration** for better planning
+* 📍 **Location-based Activity Suggestions**
+* 🖥️ **User-friendly Web Interface**
+* ⚡ Fast response time with optimized backend logic
 
-🔊 Text-to-Speech output
+---
 
-💬 Persistent chat history
+## 🛠️ Tech Stack
 
-🧳 User profile with saved trips
+**Backend**
 
-📄 Downloadable itineraries (TXT / PDF)
+* Python
+* Flask
+* Pandas
+* NumPy
 
-🎨 Modern UI with animations and responsive design
+**Frontend**
 
-🖥️ Local LLM inference using Ollama (no cloud dependency)
+* HTML
+* CSS
+* JavaScript
 
-🛠️ Tech Stack
+**Other Tools**
 
-Python
+* REST APIs (Weather / Location data)
+* Git & GitHub
 
-Streamlit
+---
 
-LangChain
+## 🧩 System Architecture
 
-Ollama (Mistral / LLaMA models)
+```
+User Input (Web UI)
+        ↓
+Flask Backend (API Layer)
+        ↓
+Data Processing (Pandas / NumPy)
+        ↓
+AI Recommendation Logic
+        ↓
+Personalized Travel Itinerary
+```
 
-SpeechRecognition
+---
 
-pyttsx3
+## 📸 Screenshots
 
-FPDF
+> *(Add screenshots of your UI here — very important for recruiters)*
 
-HTML / CSS (custom UI styling)
+```
+/screenshots
+  ├── home.png
+  ├── itinerary.png
+```
 
-🚀 How It Works
+---
 
-User enters a starting location and destination (or uses voice input)
+## ⚙️ Installation & Setup
 
-The system builds a structured travel prompt
+### 1️⃣ Clone the Repository
 
-LangChain sends the prompt to an LLM via Ollama
+```bash
+git clone https://github.com/Unknowncoder3/AI-Based-Travel-Planner.git
+cd AI-Based-Travel-Planner
+```
 
-The AI generates a detailed, human-friendly travel plan
+### 2️⃣ Create Virtual Environment (Optional but Recommended)
 
-Results are displayed, spoken aloud, saved, or downloaded
+```bash
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+```
 
-📦 Use Cases
+### 3️⃣ Install Dependencies
 
-Trip planning & itinerary creation
+```bash
+pip install -r requirements.txt
+```
 
-AI travel assistant demos
+### 4️⃣ Run the Application
 
-LLM + voice interface projects
+```bash
+python app.py
+```
 
-Smart tourism applications
+### 5️⃣ Open in Browser
 
-⚠️ Notes
+```
+http://127.0.0.1:5000/
+```
 
-Requires Ollama installed locally for LLM inference
+---
 
-Voice input depends on microphone availability
+## 🧪 Example Usage
 
-Designed for experimentation and learning; can be extended to a full-stack web app
+**Input**
+
+* Destination: Goa
+* Budget: ₹20,000
+* Duration: 4 days
+* Interests: Beaches, food, sightseeing
+
+**Output**
+
+* Day-wise travel itinerary
+* Recommended places & activities
+* Weather-aware suggestions
+
+---
+
+## 🎯 Problem Solved
+
+Planning trips manually can be time-consuming and inefficient.
+This project automates the process by:
+
+* Reducing planning time
+* Offering personalized recommendations
+* Enhancing decision-making using data-driven logic
+
+---
+
+## 📈 Future Enhancements
+
+* 🤖 LLM-based itinerary generation (GenAI integration)
+* 🗺️ Google Maps integration
+* 🏨 Hotel & flight API integration
+* 📱 Mobile-responsive UI
+* 🔐 User authentication & saved trips
+
+---
+
+## 👨‍💻 Author
+
+**Snehasish Das**
+
+* GitHub: [https://github.com/Unknowncoder3](https://github.com/Unknowncoder3)
+* LinkedIn: [https://www.linkedin.com/in/snehasish-das-7a9803219](https://www.linkedin.com/in/snehasish-das-7a9803219)
+
+
+Tell me **which project to improve next** or if you want a **GenAI upgrade plan for Travel Planner** 🔥
