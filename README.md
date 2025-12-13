@@ -74,6 +74,14 @@ Personalized Travel Itinerary
 ### 📊 Results Page
 ![Results Page](screenshots/third.png)
 
+---
+
+### 🗺️ Additional View
+![Additional View](screenshots/fourth1.png)
+
+
+---
+
 
 
 ---
