@@ -57,16 +57,29 @@ Personalized Travel Itinerary
 ```
 
 ---
+---
 
-## 📸 Screenshots
+## 🖼️ Application Screenshots
 
-> *(Add screenshots of your UI here — very important for recruiters)*
+### 🏠 Home Page
+![Home Page](screenshots/first.png)
 
-```
-/screenshots
-  ├── home.png
-  ├── itinerary.png
-```
+---
+
+### 🧭 Travel Planner
+![Travel Planner](screenshots/second.png)
+
+---
+
+### 📊 Results Page
+![Results Page](screenshots/third.png)
+
+---
+
+### 🗺️ Additional View
+![Additional View](screenshots/fourth.png)
+
+---
 
 ---
 
