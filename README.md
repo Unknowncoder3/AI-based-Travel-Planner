@@ -74,6 +74,14 @@ Personalized Travel Itinerary
 ### 📊 Results Page
 ![Results Page](screenshots/third.png)
 
+---
+
+### 🗺️ Additional View
+![Additional View](screenshots/fourth1.png)
+
+
+---
+
 
 
 ---
@@ -113,6 +121,7 @@ http://127.0.0.1:5000/
 ```
 
 ---
+🔗 Live Demo: https:https://globetrotter.streamlit.app/
 
 ## 🧪 Example Usage
 
