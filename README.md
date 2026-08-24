@@ -1,172 +1,176 @@
-
 # 🌍 AI-Based Travel Planner
 
-An **AI-powered travel planning web application** that generates **personalized travel itineraries** based on user preferences such as destination, budget, trip duration, and interests. The system leverages data processing and intelligent recommendation logic to help users plan efficient and enjoyable trips.
+<p align="center">
+  <b>Personalized travel planning with Python, Flask, data processing and recommendation logic.</b>
+</p>
+
+<p align="center">
+  <a href="https://globetrotter.streamlit.app/">Live Demo</a> •
+  <a href="https://github.com/Unknowncoder3/AI-based-Travel-Planner">Repository</a>
+</p>
 
 ---
 
-## 🚀 Features
+## 📌 Overview
 
-* 🧠 **Personalized Itinerary Generation** based on:
+AI-Based Travel Planner is a web application that helps users build personalized travel plans from preferences such as destination, budget, duration and interests.
 
-  * Destination
-  * Budget
-  * Trip duration
-  * User interests
-* 🌦️ **Real-time Weather Integration** for better planning
-* 📍 **Location-based Activity Suggestions**
-* 🖥️ **User-friendly Web Interface**
-* ⚡ Fast response time with optimized backend logic
+The project combines **data processing, recommendation logic, external information sources and a browser-based interface** into an end-to-end travel planning workflow.
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Features
 
-**Backend**
-
-* Python
-* Flask
-* Pandas
-* NumPy
-
-**Frontend**
-
-* HTML
-* CSS
-* JavaScript
-
-**Other Tools**
-
-* REST APIs (Weather / Location data)
-* Git & GitHub
+- 🧠 Personalized itinerary generation
+- 💰 Budget-aware planning
+- 📅 Trip-duration based recommendations
+- ❤️ Interest-based activity suggestions
+- 🌦️ Weather information integration
+- 📍 Location/activity recommendations
+- 🖥️ Web-based user interface
+- ⚡ Lightweight Flask backend
 
 ---
 
-## 🧩 System Architecture
+## 🏗️ System Architecture
 
-```
-User Input (Web UI)
-        ↓
-Flask Backend (API Layer)
-        ↓
-Data Processing (Pandas / NumPy)
-        ↓
-AI Recommendation Logic
-        ↓
-Personalized Travel Itinerary
+```text
+User Preferences
+(destination / budget / duration / interests)
+              ↓
+        Web Interface
+              ↓
+        Flask API Layer
+              ↓
+     Data Processing Layer
+       Pandas / NumPy
+              ↓
+   Recommendation / Ranking Logic
+              ↓
+ Weather + Location Information
+              ↓
+   Personalized Travel Plan
 ```
 
 ---
+
+## 🧰 Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| Python | Application logic |
+| Flask | Backend / API layer |
+| Pandas | Data processing |
+| NumPy | Numerical processing |
+| HTML/CSS/JavaScript | Frontend |
+| REST APIs | External information |
+| Git/GitHub | Version control |
+
 ---
 
-## 🖼️ Application Screenshots
+## 📸 Screenshots
 
-### 🏠 Home Page
+### Home Page
 ![Home Page](screenshots/first.png)
 
----
-
-### 🧭 Travel Planner
+### Travel Planner
 ![Travel Planner](screenshots/second.png)
 
----
+### Results
+![Results](screenshots/third.png)
 
-### 📊 Results Page
-![Results Page](screenshots/third.png)
-
----
-
-### 🗺️ Additional View
+### Additional View
 ![Additional View](screenshots/fourth1.png)
 
+---
+
+## 🚀 Live Demo
+
+**[Open the deployed application →](https://globetrotter.streamlit.app/)**
+
+> Availability of third-party APIs and hosted services may affect some live features.
 
 ---
 
+## 🧪 Example
 
+**Input**
+
+```text
+Destination: Goa
+Budget: ₹20,000
+Duration: 4 days
+Interests: Beaches, food, sightseeing
+```
+
+**Expected output**
+
+- Day-wise itinerary
+- Recommended places and activities
+- Budget-aware suggestions
+- Weather-aware planning information
 
 ---
 
-## ⚙️ Installation & Setup
-
-### 1️⃣ Clone the Repository
+## ⚙️ Run Locally
 
 ```bash
-git clone https://github.com/Unknowncoder3/AI-Based-Travel-Planner.git
-cd AI-Based-Travel-Planner
+git clone https://github.com/Unknowncoder3/AI-based-Travel-Planner.git
+cd AI-based-Travel-Planner
+python -m venv .venv
 ```
 
-### 2️⃣ Create Virtual Environment (Optional but Recommended)
-
-```bash
-python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
-```
-
-### 3️⃣ Install Dependencies
+Activate the environment and install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4️⃣ Run the Application
+Run the Flask application:
 
 ```bash
 python app.py
 ```
 
-### 5️⃣ Open in Browser
+Then open:
 
-```
+```text
 http://127.0.0.1:5000/
 ```
 
 ---
-🔗 Live Demo: https:https://globetrotter.streamlit.app/
 
-## 🧪 Example Usage
+## 🎯 What This Project Demonstrates
 
-**Input**
-
-* Destination: Goa
-* Budget: ₹20,000
-* Duration: 4 days
-* Interests: Beaches, food, sightseeing
-
-**Output**
-
-* Day-wise travel itinerary
-* Recommended places & activities
-* Weather-aware suggestions
+- Turning user requirements into a recommendation workflow
+- Python-based data processing
+- Flask API development
+- Frontend/backend integration
+- External API integration
+- Data-driven recommendation logic
+- Deployment of a working web application
 
 ---
 
-## 🎯 Problem Solved
+## 🔮 Future Improvements
 
-Planning trips manually can be time-consuming and inefficient.
-This project automates the process by:
-
-* Reducing planning time
-* Offering personalized recommendations
-* Enhancing decision-making using data-driven logic
-
----
-
-## 📈 Future Enhancements
-
-* 🤖 LLM-based itinerary generation (GenAI integration)
-* 🗺️ Google Maps integration
-* 🏨 Hotel & flight API integration
-* 📱 Mobile-responsive UI
-* 🔐 User authentication & saved trips
+- LLM-powered itinerary generation
+- RAG-based destination knowledge
+- Google Maps integration
+- Hotel and flight APIs
+- Saved trips and authentication
+- Better budget optimization
+- Recommendation evaluation metrics
 
 ---
 
 ## 👨‍💻 Author
 
-**Snehasish Das**
+**Snehasish Das** — Data Analyst | Applied AI Developer
 
-* GitHub: [https://github.com/Unknowncoder3](https://github.com/Unknowncoder3)
-* LinkedIn: [https://www.linkedin.com/in/snehasish-das-7a9803219](https://www.linkedin.com/in/snehasish-das-7a9803219)
+- GitHub: https://github.com/Unknowncoder3
+- LinkedIn: https://www.linkedin.com/in/snehasish-das-b75a551b0/
 
+---
 
-Tell me **which project to improve next** or if you want a **GenAI upgrade plan for Travel Planner** 🔥
+⭐ Explore the repository and live demo to see the complete workflow.
