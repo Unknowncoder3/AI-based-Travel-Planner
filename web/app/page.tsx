@@ -20,13 +20,38 @@ type Destination = {
   rating: string;
   image: string;
   accent: string;
+  gallery: string[];
 };
 
 const destinations: Destination[] = [
-  { name: "Darjeeling", region: "West Bengal, India", category: ["mountains", "nature"], mood: "Mountain air", description: "Tea gardens, toy-train nostalgia and misty Himalayan mornings.", duration: "3–4 days", budget: "From ₹6,500", rating: "4.8", image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1000&q=85", accent: "Misty mornings" },
-  { name: "Andaman Islands", region: "Bay of Bengal, India", category: ["islands", "nature"], mood: "Ocean time", description: "Blue water, coral worlds and the kind of quiet you can hear.", duration: "5–7 days", budget: "From ₹18,000", rating: "4.9", image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1000&q=85", accent: "Find your blue" },
-  { name: "Jaipur", region: "Rajasthan, India", category: ["culture", "food"], mood: "Living history", description: "Pink-city lanes, old-world craft, courtyards and bold flavors.", duration: "2–3 days", budget: "From ₹5,000", rating: "4.7", image: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1000&q=85", accent: "A city with stories" },
-  { name: "Meghalaya", region: "Northeast India", category: ["nature", "mountains"], mood: "Into the wild", description: "Living root bridges, forest trails and waterfalls tucked away.", duration: "4–6 days", budget: "From ₹8,000", rating: "4.8", image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1000&q=85", accent: "Follow the green" },
+  { name: "Darjeeling", region: "West Bengal, India", category: ["mountains", "nature"], mood: "Mountain air", description: "Tea gardens, toy-train nostalgia and misty Himalayan mornings.", duration: "3–4 days", budget: "From ₹6,500", rating: "4.8", image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1000&q=85", accent: "Misty mornings", gallery: [
+    "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1500&q=90"
+  ] },
+  { name: "Andaman Islands", region: "Bay of Bengal, India", category: ["islands", "nature"], mood: "Ocean time", description: "Blue water, coral worlds and the kind of quiet you can hear.", duration: "5–7 days", budget: "From ₹18,000", rating: "4.9", image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1000&q=85", accent: "Find your blue", gallery: [
+    "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=1500&q=90"
+  ] },
+  { name: "Jaipur", region: "Rajasthan, India", category: ["culture", "food"], mood: "Living history", description: "Pink-city lanes, old-world craft, courtyards and bold flavors.", duration: "2–3 days", budget: "From ₹5,000", rating: "4.7", image: "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=1000&q=85", accent: "A city with stories", gallery: [
+    "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1602643163983-ed0babc39797?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1500&q=90"
+  ] },
+  { name: "Meghalaya", region: "Northeast India", category: ["nature", "mountains"], mood: "Into the wild", description: "Living root bridges, forest trails and waterfalls tucked away.", duration: "4–6 days", budget: "From ₹8,000", rating: "4.8", image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1000&q=85", accent: "Follow the green", gallery: [
+    "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1500&q=90",
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1500&q=90"
+  ] },
 ];
 
 const categoryOptions = [
@@ -46,6 +71,9 @@ const experiences = [
 
 export default function Home() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [galleryPlace, setGalleryPlace] = useState<Destination | null>(null);
+  const [galleryIndex, setGalleryIndex] = useState(0);
+  const [slideIndexes, setSlideIndexes] = useState<Record<string, number>>({});
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("roamly-theme");
     if (savedTheme === "dark" || savedTheme === "light") setTheme(savedTheme);
@@ -54,6 +82,18 @@ export default function Home() {
     document.documentElement.dataset.theme = theme;
     window.localStorage.setItem("roamly-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setSlideIndexes((current) => Object.fromEntries(destinations.map((place) => [place.name, ((current[place.name] ?? 0) + 1) % place.gallery.length])));
+    }, 4200);
+    return () => window.clearInterval(timer);
+  }, []);
+  useEffect(() => {
+    if (!galleryPlace) return;
+    const timer = window.setInterval(() => setGalleryIndex((current) => (current + 1) % galleryPlace.gallery.length), 3600);
+    return () => window.clearInterval(timer);
+  }, [galleryPlace]);
 
   const [activeCategory, setActiveCategory] = useState("all");
   const [saved, setSaved] = useState<string[]>([]);
@@ -159,7 +199,7 @@ export default function Home() {
             <a href="#experiences" onClick={() => setMobileMenu(false)}>Experiences</a>
             <a href="#planner" onClick={() => setMobileMenu(false)}>Trip planner</a>
           </nav>
-          <div className="nav-actions"><button className="button button-quiet theme-toggle" onClick={() => setTheme((current) => current === "light" ? "dark" : "light")} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}>{theme === "light" ? <Moon size={16} /> : <Sun size={16} />}<span>{theme === "light" ? "Dark mode" : "Light mode"}</span></button><button className="button button-quiet" onClick={() => showToast(saved.length ? `You’ve saved ${saved.length} place(s).` : "Save a place with the heart icon to find it here.")}><Bookmark size={15} /> Saved{saved.length ? ` · ${saved.length}` : ""}</button><a className="button button-primary nav-cta" href="#planner">Plan a trip <ArrowUpRight size={16} /></a></div>
+          <div className="nav-actions"><button className="button button-quiet theme-toggle" onClick={() => setTheme((current) => current === "light" ? "dark" : "light")} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}>{theme === "light" ? <Moon size={17} /> : <Sun size={17} />}</button><button className="button button-quiet" onClick={() => showToast(saved.length ? `You’ve saved ${saved.length} place(s).` : "Save a place with the heart icon to find it here.")}><Bookmark size={15} /> Saved{saved.length ? ` · ${saved.length}` : ""}</button><a className="button button-primary nav-cta" href="#planner">Plan a trip <ArrowUpRight size={16} /></a></div>
         </div>
       </header>
 
@@ -196,7 +236,7 @@ export default function Home() {
           <div className="category-list">{categoryOptions.map(({ id, label, icon: Icon }) => <button key={id} className={`category-chip ${activeCategory === id ? "selected" : ""}`} onClick={() => setActiveCategory(id)}><Icon size={15} /> {label}</button>)}</div>
           <div className="destination-grid">
             {filteredDestinations.map((place, index) => <motion.article className="destination-card" key={place.name} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .3, delay: index * .04 }}>
-              <div className="destination-image"><img src={place.image} alt={`${place.name} destination landscape`} loading="lazy" /><span className="image-mood">{place.mood}</span><button className={`heart-button ${saved.includes(place.name) ? "is-saved" : ""}`} aria-label={saved.includes(place.name) ? `Remove ${place.name} from saved` : `Save ${place.name}`} onClick={() => toggleSave(place.name)}><Heart size={17} fill={saved.includes(place.name) ? "currentColor" : "none"} /></button></div>
+              <button type="button" className="destination-image destination-image-button" onClick={() => { setGalleryPlace(place); setGalleryIndex(slideIndexes[place.name] ?? 0); }} aria-label={`View ${place.name} photo gallery`}><AnimatePresence mode="wait"><motion.img key={place.gallery[slideIndexes[place.name] ?? 0]} src={place.gallery[slideIndexes[place.name] ?? 0]} alt={`${place.name} travel scenery`} loading="lazy" initial={{ opacity: 0, scale: 1.035 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: .65 }} /></AnimatePresence><span className="image-mood">{place.mood}</span><span className="gallery-hint"><Camera size={13} /> Explore photos</span></button><button className={`heart-button ${saved.includes(place.name) ? "is-saved" : ""}`} aria-label={saved.includes(place.name) ? `Remove ${place.name} from saved` : `Save ${place.name}`} onClick={() => toggleSave(place.name)}><Heart size={17} fill={saved.includes(place.name) ? "currentColor" : "none"} /></button>
               <div className="destination-content"><div className="card-meta"><span>{place.region}</span><span className="rating"><Star size={13} fill="currentColor" /> {place.rating}</span></div><h3>{place.name}</h3><p>{place.description}</p><div className="destination-footer"><span><CalendarDays size={14} /> {place.duration}</span><strong>{place.budget}</strong></div><button className="card-explore" onClick={() => { setDestination(place.name); document.getElementById("planner")?.scrollIntoView({ behavior: "smooth" }); }}>Explore this place <ChevronRight size={15} /></button></div>
             </motion.article>)}
           </div>
@@ -219,6 +259,15 @@ export default function Home() {
       {!chatOpen && <motion.button className="chat-launcher" onClick={() => setChatOpen(true)} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }} aria-label="Open Roamly travel buddy"><span className="chat-prompt">Need a little travel inspiration?</span><span className="doodle-face"><span className="doodle-sparkle">✦</span><span className="doodle-eyes"><i /><i /></span><span className="doodle-smile" /><span className="doodle-status" /></span></motion.button>}
       <AnimatePresence>{chatOpen && <motion.aside className="chat-widget" initial={{ opacity: 0, y: 15, scale: .97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: .98 }} transition={{ duration: .2 }} aria-label="Roamly travel assistant"><div className="chat-header"><span className="chat-avatar"><Compass size={19} /></span><div><strong>Roamly buddy</strong><small><span /> Here to help you explore</small></div><button aria-label="Close chat" className="chat-close" onClick={() => setChatOpen(false)}><X size={17} /></button></div><div className="chat-messages">{chatMessages.map((message, index) => <div className={`chat-message ${message.role}`} key={index}>{message.text}</div>)}</div><div className="chat-suggestions"><button onClick={() => sendChat("Suggest a 3-day trip")}>3-day trip</button><button onClick={() => sendChat("Find hidden gems")}>Hidden gems</button><button onClick={() => sendChat("Help me plan on a budget")}>Budget ideas</button></div><form className="chat-input-row" onSubmit={(event) => { event.preventDefault(); sendChat(); }}><input value={chatText} onChange={(event) => setChatText(event.target.value)} placeholder="Ask me about your trip…" aria-label="Message Roamly buddy" /><button type="submit" aria-label="Send message"><Send size={16} /></button></form><div className="chat-disclaimer">Demo assistant · live AI will be connected in a later phase</div></motion.aside>}</AnimatePresence>
       {chatOpen && <button className="chat-reopen-doodle" aria-label="Close chat" onClick={() => setChatOpen(false)}><span className="doodle-face small"><span className="doodle-eyes"><i /><i /></span><span className="doodle-smile" /></span></button>}
+      <AnimatePresence>
+        {galleryPlace && <motion.div className="gallery-backdrop" role="dialog" aria-modal="true" aria-label={`${galleryPlace.name} photo gallery`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setGalleryPlace(null)}>
+          <motion.section className="gallery-modal" initial={{ opacity: 0, y: 22, scale: .97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: .98 }} transition={{ duration: .28 }} onClick={(event) => event.stopPropagation()}>
+            <button className="gallery-close" onClick={() => setGalleryPlace(null)} aria-label="Close gallery"><X size={20} /></button>
+            <div className="gallery-photo"><AnimatePresence mode="wait"><motion.img key={galleryPlace.gallery[galleryIndex]} src={galleryPlace.gallery[galleryIndex]} alt={`${galleryPlace.name} scene ${galleryIndex + 1}`} initial={{ opacity: 0, scale: 1.025 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: .55 }} /></AnimatePresence><button className="gallery-arrow gallery-prev" aria-label="Previous photo" onClick={() => setGalleryIndex((galleryIndex - 1 + galleryPlace.gallery.length) % galleryPlace.gallery.length)}><ArrowDownRight size={19} className="gallery-prev-icon" /></button><button className="gallery-arrow gallery-next" aria-label="Next photo" onClick={() => setGalleryIndex((galleryIndex + 1) % galleryPlace.gallery.length)}><ArrowRight size={19} /></button><div className="gallery-photo-count">{String(galleryIndex + 1).padStart(2, "0")} / {String(galleryPlace.gallery.length).padStart(2, "0")} · CHANGING SCENES</div></div>
+            <div className="gallery-details"><div><div className="eyebrow"><span /> TAKE A CLOSER LOOK</div><h2>{galleryPlace.name}</h2><p>{galleryPlace.description}</p><div className="gallery-dots">{galleryPlace.gallery.map((photo, index) => <button key={photo} className={index === galleryIndex ? "active" : ""} aria-label={`Show photo ${index + 1}`} onClick={() => setGalleryIndex(index)} />)}</div></div><button className="button button-primary gallery-plan" onClick={() => { setDestination(galleryPlace.name); setGalleryPlace(null); document.getElementById("planner")?.scrollIntoView({ behavior: "smooth" }); }}>Plan this trip <ArrowUpRight size={16} /></button></div>
+          </motion.section>
+        </motion.div>}
+      </AnimatePresence>
       <AnimatePresence>{toast && <motion.div className="toast-message" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}>{toast}</motion.div>}</AnimatePresence>
     </main>
   );
