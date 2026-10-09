@@ -1,10 +1,10 @@
 "use client";
 
-import React, { FormEvent, useMemo, useState } from "react";
+import React, { FormEvent, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDownRight, ArrowRight, ArrowUpRight, Bookmark, Check, ChevronRight,
-  Compass, Heart, MapPin, Menu, MessageCircle, Mountain, Search, Send,
+  Compass, Heart, MapPin, Menu, MessageCircle, Mountain, Search, Send, Moon,
   Sparkles, Star, Sun, Waves, X, Clock3, Utensils, Camera, Footprints,
   Leaf, Navigation, CalendarDays, Wallet, Users, Route, CloudSun, CircleHelp
 } from "lucide-react";
@@ -45,6 +45,16 @@ const experiences = [
 ];
 
 export default function Home() {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  useEffect(() => {
+    const savedTheme = window.localStorage.getItem("roamly-theme");
+    if (savedTheme === "dark" || savedTheme === "light") setTheme(savedTheme);
+  }, []);
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem("roamly-theme", theme);
+  }, [theme]);
+
   const [activeCategory, setActiveCategory] = useState("all");
   const [saved, setSaved] = useState<string[]>([]);
   const [searchDestination, setSearchDestination] = useState("");
@@ -149,7 +159,7 @@ export default function Home() {
             <a href="#experiences" onClick={() => setMobileMenu(false)}>Experiences</a>
             <a href="#planner" onClick={() => setMobileMenu(false)}>Trip planner</a>
           </nav>
-          <div className="nav-actions"><button className="button button-quiet" onClick={() => showToast(saved.length ? `You’ve saved ${saved.length} place(s).` : "Save a place with the heart icon to find it here.")}><Bookmark size={15} /> Saved{saved.length ? ` · ${saved.length}` : ""}</button><a className="button button-primary nav-cta" href="#planner">Plan a trip <ArrowUpRight size={16} /></a></div>
+          <div className="nav-actions"><button className="button button-quiet theme-toggle" onClick={() => setTheme((current) => current === "light" ? "dark" : "light")} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}>{theme === "light" ? <Moon size={16} /> : <Sun size={16} />}<span>{theme === "light" ? "Dark mode" : "Light mode"}</span></button><button className="button button-quiet" onClick={() => showToast(saved.length ? `You’ve saved ${saved.length} place(s).` : "Save a place with the heart icon to find it here.")}><Bookmark size={15} /> Saved{saved.length ? ` · ${saved.length}` : ""}</button><a className="button button-primary nav-cta" href="#planner">Plan a trip <ArrowUpRight size={16} /></a></div>
         </div>
       </header>
 
