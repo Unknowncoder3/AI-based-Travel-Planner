@@ -16,3 +16,105 @@
 @media(max-width:760px){.container{width:min(100% - 32px,560px)}.site-nav{min-height:67px;position:relative;flex-wrap:wrap}.mobile-menu-button{display:grid;place-items:center;margin-left:auto}.nav-links{display:none;order:4;flex-direction:column;align-items:stretch;width:100%;padding:8px 0 14px}.nav-links.nav-links-open{display:flex}.nav-links a{padding:11px 8px}.nav-actions{display:none}.hero{padding-top:38px}.hero-grid{grid-template-columns:1fr;gap:30px}.hero-copy{padding:0}.hero h1{font-size:clamp(3.1rem,12vw,4.4rem);max-width:580px}.hero-description{font-size:.96rem}.hero-visual{height:370px;border-radius:23px}.quick-search{grid-template-columns:1fr 1fr;margin-top:22px;padding:9px}.search-field{padding:10px;border-right:0;border-bottom:1px solid var(--line)}.search-destination{grid-column:span 2}.search-field:nth-child(2){border-right:1px solid var(--line)}.search-field:nth-child(3){border-bottom:1px solid var(--line)}.search-field:nth-child(4){margin-top:0}.search-submit{grid-column:span 2;margin:9px 0 0;width:100%}.section{padding:43px 0}.discover-section{padding-top:34px}.section-heading{align-items:start;flex-direction:column;gap:13px;margin-bottom:19px}.section-heading h2{font-size:2.15rem}.text-link{padding:0}.destination-grid{gap:11px}.destination-image{height:170px}.destination-content{padding:12px}.destination-content h3{font-size:1.02rem}.destination-content>p{font-size:.76rem;min-height:77px}.card-meta{font-size:.59rem}.destination-footer{font-size:.62rem;flex-wrap:wrap}.destination-footer strong{font-size:.65rem}.gems-panel{grid-template-columns:1fr;padding:23px;gap:27px;border-radius:23px}.gems-copy h2{font-size:3rem}.gems-collage{max-width:500px}.gems-collage img{height:145px}.gems-collage .gem-three{height:110px}.gems-collage .gem-four{height:128px}.experiences-section{padding-top:8px}.experience-grid{grid-template-columns:1fr 1fr;gap:10px}.experience-card:first-child{grid-column:span 2;min-height:250px}.experience-card{min-height:220px}.experience-copy{left:14px;right:14px;bottom:14px}.experience-copy h3{font-size:1.1rem}.experience-copy p{font-size:.72rem}.planner-section{padding:47px 0}.planner-grid{grid-template-columns:1fr;gap:28px}.planner-intro{padding-top:0}.planner-intro h2{font-size:2.8rem}.planner-card{padding:19px}.footer-inner{flex-wrap:wrap}.footer-inner>span{order:3;width:100%}.chat-launcher{right:13px;bottom:13px;gap:7px}.doodle-face{width:57px;height:57px;border-radius:20px}.doodle-eyes{left:14px;top:20px}.doodle-smile{left:18px;top:31px}.chat-prompt{max-width:156px;font-size:.69rem;padding:9px 10px}.chat-widget{right:12px;bottom:82px;width:calc(100vw - 24px);height:min(485px,calc(100vh - 110px))}.chat-reopen-doodle{right:14px;bottom:14px}.toast-message{left:12px;bottom:12px;max-width:calc(100vw - 90px);font-size:.74rem}}
 @media(max-width:420px){.hero-actions .button{width:100%}.hero-visual{height:330px}.floating-note{right:10px;top:67px;max-width:182px}.hero-caption{left:18px;right:18px;bottom:18px}.hero-caption h2{font-size:1.5rem}.caption-meta{flex-wrap:wrap}.destination-grid{grid-template-columns:1fr 1fr}.destination-image{height:142px}.image-mood{font-size:.59rem;padding:6px 7px;left:7px;bottom:7px}.heart-button{right:7px;top:7px;width:31px;height:31px}.destination-content>p{min-height:90px}.destination-footer{align-items:flex-start;flex-direction:column}.experience-grid{grid-template-columns:1fr}.experience-card:first-child{grid-column:auto}.experience-card{min-height:225px}.form-grid{grid-template-columns:1fr}.planner-card-heading h3{font-size:1.3rem}.footer-inner>div{gap:10px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* Phase 1.1 — dusk palette + richer motion */
+:root{--ink:#f0f1e9;--muted:#a2afa5;--cream:#101713;--paper:#18221c;--green:#b5d58c;--lime:#d9f078;--line:#2b392f;--orange:#e9a477}
+body,.roamly-app{background:var(--cream);color:var(--ink)}
+.site-header{background:#101713df;border-bottom-color:#2b392fbd}
+.brand-mark{background:#d9f078;color:#1b2b20}
+.brand-period{color:#d9f078}
+.nav-links a{color:#a8b5aa}
+.nav-links a:hover{background:#25352a;color:#f0f1e9}
+.button-primary{background:#c8e6a4;color:#17271c}
+.button-primary:hover{background:#d9f078}
+.button-light,.button-quiet{background:#18221c;border-color:#344339;color:#e8eee6}
+.button-light:hover,.button-quiet:hover{border-color:#8da77c}
+.hero h1 em,.gems-copy h2 em{color:#c6e59e}
+.hero-description,.traveler-note p,.section-heading p{color:#a2afa5}
+.traveler-note strong{color:#edf1e9}
+.hero-visual{background:#26372a;box-shadow:0 28px 70px #0005}
+.photo-tag,.floating-note{background:#17231cF2;color:#edf2e9;border:1px solid #3a4a3d}
+.note-icon{background:#2c402e;color:#d9f078}
+.floating-note div>span{color:#aab7ab}
+.hero-caption p{color:#d2ddd3}
+.quick-search,.destination-card,.planner-card,.chat-widget,.chat-input-row,.chat-disclaimer,.chat-suggestions{background:var(--paper);border-color:var(--line)}
+.search-field{border-color:var(--line)}
+.search-field>span{color:#93a398}
+.search-field input,.search-field select,.form-field input,.form-field select{color:var(--ink)}
+.search-field input::placeholder,.form-field input::placeholder{color:#7e9083}
+.search-field select,.form-field select{color-scheme:dark}
+.category-chip{background:#18221c;border-color:#354339;color:#afbbb0}
+.category-chip.selected,.category-chip:hover{background:#c8e6a4;border-color:#c8e6a4;color:#17271c}
+.destination-card{box-shadow:0 8px 25px #00000012}
+.destination-card:hover{border-color:#506b52;box-shadow:0 20px 44px #0005}
+.destination-image{background:#25372b}
+.image-mood,.heart-button{background:#17231ceF;color:#edf1e9;border:1px solid #35473a}
+.heart-button.is-saved{background:#56352f;color:#ffb4a5}
+.card-meta,.destination-footer{color:#9ba99d}
+.destination-content>p{color:#a4b0a5}
+.destination-footer,.card-explore{border-color:var(--line)}
+.destination-footer strong,.destination-content h3{color:#f0f1e9}
+.card-explore{color:#c6e59e}
+.data-note{color:#819186}
+.gems-panel{background:#202c22;border:1px solid #334334}
+.gems-copy>p{color:#b0bdb0}
+.gems-promise>span{background:#344831;color:#d9f078}
+.gems-promise small{color:#a1b1a0}
+.planner-section{background:#0c120e;border-top:1px solid #29382d;border-bottom:1px solid #29382d}
+.planner-intro .eyebrow{color:#d9f078}
+.planner-intro>p,.planner-benefits span{color:#b6c5b8}
+.planner-icon{background:#293a2c;color:#d9f078}
+.planner-card-heading p{color:#9eada1}
+.form-field>span{color:#9eada1}
+.form-field input,.form-field select{background:#111a14;border-color:#344339}
+.form-field input:focus,.form-field select:focus{border-color:#9fc27e;box-shadow:0 0 0 3px #b5d58c18}
+.preference-chip{background:#111a14;border-color:#344339;color:#a8b8aa}
+.preference-chip.selected{background:#2b402c;border-color:#6e945d;color:#d9f078}
+.result-summary{background:#18221c;color:var(--ink);border:1px solid var(--line)}
+.result-day{border-color:var(--line)}
+.result-day strong{color:#c6e59e}
+.site-footer{background:#0d130f}
+.footer-inner{border-color:var(--line);color:#93a196}
+.footer-inner .brand{color:#f0f1e9}
+.chat-prompt{background:#1a271e;border-color:#3b4d3e;color:#edf1e9}
+.doodle-face{background:#d9f078;border-color:#18221c}
+.chat-header{background:#203a29}
+.chat-avatar{background:#d9f078;color:#1a2b1e}
+.chat-message.bot{background:#27372a;color:#e1eadf}
+.chat-message.user{background:#c8e6a4;color:#17271c}
+.chat-suggestions{background:#18221c}
+.chat-suggestions button{background:#111a14;border-color:#35483a;color:#c2d3c1}
+.chat-input-row{border-color:var(--line)}
+.chat-input-row input{background:#111a14;border-color:#354339;color:#edf1e9}
+.chat-input-row button{background:#c8e6a4;color:#17271c}
+.chat-disclaimer{color:#829386}
+.toast-message{background:#d9f078;color:#17271c}
+.mobile-menu-button{color:var(--ink)}
+@keyframes roamlyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes roamlyGlow{0%,100%{box-shadow:0 0 0 0 #c8e6a400}50%{box-shadow:0 0 0 9px #c8e6a40c}}
+@keyframes roamlyReveal{from{opacity:0;transform:translateY(18px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+.hero-visual{animation:roamlyReveal .9s cubic-bezier(.2,.75,.25,1) both}
+.floating-note{animation:roamlyFloat 5s ease-in-out infinite}
+.photo-tag{animation:roamlyFloat 6s ease-in-out infinite reverse}
+.destination-card{animation:roamlyReveal .65s both}
+.destination-card:nth-child(2){animation-delay:.08s}
+.destination-card:nth-child(3){animation-delay:.16s}
+.destination-card:nth-child(4){animation-delay:.24s}
+.destination-image img{filter:saturate(.88) brightness(.9)}
+.destination-card:hover .destination-image img{filter:saturate(1.08) brightness(1.02)}
+.experience-card{box-shadow:0 14px 35px #0002}
+.experience-card img{filter:saturate(.82) brightness(.84)}
+.experience-card:hover img{filter:saturate(1) brightness(.98)}
+.gems-collage img{box-shadow:0 15px 30px #0003;transition:transform .45s cubic-bezier(.2,.75,.25,1),filter .35s}
+.gems-collage img:hover{transform:translateY(-6px) rotate(-1deg);filter:brightness(1.1)}
+.gems-collage .gem-two:hover,.gems-collage .gem-four:hover{transform:translateY(9px) rotate(1deg)}
+.button,.category-chip,.preference-chip,.heart-button,.chat-launcher,.text-link{transition:transform .25s cubic-bezier(.2,.75,.25,1),background .25s,border-color .25s,color .25s,box-shadow .25s}
+.button:hover,.category-chip:hover,.preference-chip:hover{transform:translateY(-2px)}
+.chat-launcher{animation:roamlyFloat 4.5s ease-in-out infinite}
+.doodle-face{animation:roamlyGlow 3.8s ease-in-out infinite}
+.chat-prompt{animation:promptIn .55s ease both,roamlyFloat 5s ease-in-out 1s infinite}
+.chat-widget{backdrop-filter:blur(18px)}
+::selection{background:#c8e6a4;color:#17271c}
+@media(max-width:760px){.nav-links.nav-links-open{background:#101713;border:1px solid var(--line);border-radius:14px;padding:8px;margin-bottom:10px}.gems-panel{background:#202c22}}
+@media(prefers-reduced-motion:reduce){.hero-visual,.floating-note,.photo-tag,.destination-card,.gems-collage img,.chat-launcher,.doodle-face,.chat-prompt{animation:none!important}}
