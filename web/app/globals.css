@@ -74,3 +74,62 @@ html[data-theme="dark"] .gallery-details p{color:#a2afa5}
 html[data-theme="dark"] .gallery-dots button{background:#46574a}
 html[data-theme="dark"] .gallery-dots button.active{background:#d9f078}
 html[data-theme="dark"] .destination-image-button .gallery-hint{background:#17231ceF}
+
+
+/* Destination cards stay still; the richer gallery is user-controlled. */
+.destination-image-button img{transition:transform .45s ease,filter .3s ease}
+.destination-image-button:hover img{transform:scale(1.025)}
+.gallery-modal.destination-guide-modal{max-height:92vh;overflow-y:auto}
+.destination-guide-modal .gallery-photo{height:clamp(270px,42vh,460px);min-height:270px}
+.destination-guide-modal .gallery-photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gallery-thumbnails{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;padding:12px 28px 0}
+.gallery-thumbnails button{height:84px;padding:0;overflow:hidden;border:2px solid transparent;border-radius:12px;background:#e8e9df;opacity:.78;transition:opacity .2s,border-color .2s,transform .2s}
+.gallery-thumbnails button:hover{opacity:1;transform:translateY(-2px)}
+.gallery-thumbnails button.active{border-color:#235b45;opacity:1}
+.gallery-thumbnails img{width:100%;height:100%;object-fit:cover;display:block}
+.guide-heading{display:grid;grid-template-columns:minmax(0,1fr) 245px;gap:30px;align-items:start;padding:28px 30px 24px}
+.guide-heading h2{font:800 clamp(2.2rem,5vw,3.4rem) var(--font-display);letter-spacing:-.075em;line-height:1.05;margin:10px 0 8px}
+.guide-heading .guide-region{display:flex;align-items:center;gap:6px;color:#68776e;font-size:.85rem;font-weight:700;margin:0 0 15px}
+.guide-about{font-size:.95rem;line-height:1.8;color:#53645a;margin:0;max-width:680px}
+.guide-budget{display:flex;flex-direction:column;align-items:flex-start;gap:7px;border:1px solid #e2e7dc;border-radius:18px;padding:17px;background:#f7f7f1}
+.guide-budget>span{font-size:.62rem;letter-spacing:.1em;font-weight:900;color:#748276}
+.guide-budget>strong{font-size:1.05rem;line-height:1.4;color:#172820;margin-bottom:5px}
+.guide-budget small{font-size:.68rem;line-height:1.5;color:#7b887e;margin-bottom:7px}
+.guide-budget .button{width:100%;white-space:normal}
+.guide-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:0 30px 26px}
+.guide-facts>div{display:grid;grid-template-columns:24px minmax(0,1fr);column-gap:8px;row-gap:5px;align-content:start;padding:15px;border-radius:14px;background:#f7f7f1;border:1px solid #e8e9df}
+.guide-facts svg{grid-row:span 2;color:#235b45}
+.guide-facts span{font-size:.62rem;letter-spacing:.08em;font-weight:900;color:#748276}
+.guide-facts strong{font-size:.78rem;line-height:1.55;color:#24382b}
+.guide-content-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:0 30px 28px}
+.guide-section{border:1px solid #e5e9df;border-radius:16px;padding:19px 20px}
+.guide-section-title{display:flex;align-items:center;gap:9px;margin-bottom:10px;color:#235b45}
+.guide-section-title h3{margin:0;font:800 1rem var(--font-display);letter-spacing:-.03em;color:#172820}
+.guide-section ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.guide-section li{position:relative;padding-left:17px;font-size:.82rem;line-height:1.65;color:#53645a}
+.guide-section li:before{content:"";position:absolute;left:0;top:.63em;width:6px;height:6px;border-radius:50%;background:#b3cc91}
+.guide-bottom-cta{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 30px;padding:20px 22px;border-radius:17px;background:#eaf0e4}
+.guide-bottom-cta>div{display:grid;gap:5px}
+.guide-bottom-cta strong{font:800 1.05rem var(--font-display);color:#172820}
+.guide-bottom-cta span{font-size:.82rem;line-height:1.6;color:#53645a}
+.guide-bottom-cta .button{flex-shrink:0}
+.guide-disclaimer{margin:18px 30px 26px;font-size:.68rem;line-height:1.6;color:#7b887e}
+html[data-theme="dark"] .guide-budget,html[data-theme="dark"] .guide-facts>div{background:#111a14;border-color:#344339}
+html[data-theme="dark"] .guide-budget>span,html[data-theme="dark"] .guide-budget small,html[data-theme="dark"] .guide-facts span,html[data-theme="dark"] .guide-disclaimer{color:#9eada1}
+html[data-theme="dark"] .guide-budget>strong,html[data-theme="dark"] .guide-facts strong,html[data-theme="dark"] .guide-section-title h3,html[data-theme="dark"] .guide-bottom-cta strong{color:#f0f1e9}
+html[data-theme="dark"] .guide-heading .guide-region,html[data-theme="dark"] .guide-about,html[data-theme="dark"] .guide-section li,html[data-theme="dark"] .guide-bottom-cta span{color:#a2afa5}
+html[data-theme="dark"] .guide-section{border-color:#344339}
+html[data-theme="dark"] .guide-section-title,html[data-theme="dark"] .guide-facts svg{color:#c6e59e}
+html[data-theme="dark"] .guide-bottom-cta{background:#243629}
+html[data-theme="dark"] .gallery-thumbnails button.active{border-color:#d9f078}
+@media(max-width:760px){
+ .guide-heading{grid-template-columns:1fr;padding:23px 20px;gap:18px}
+ .guide-budget{width:100%}
+ .guide-facts{grid-template-columns:1fr;padding:0 20px 20px}
+ .guide-content-grid{grid-template-columns:1fr;padding:0 20px 20px}
+ .gallery-thumbnails{gap:5px;padding:10px 14px 0}
+ .gallery-thumbnails button{height:58px;border-radius:8px}
+ .guide-bottom-cta{margin:0 20px;align-items:stretch;flex-direction:column}
+ .guide-bottom-cta .button{width:100%}
+ .guide-disclaimer{margin:16px 20px 22px}
+}
