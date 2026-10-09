@@ -24,3 +24,53 @@ html[data-theme="dark"]{--ink:#f0f1e9;--muted:#a2afa5;--cream:#101713;--paper:#1
 @keyframes roamlyReveal{from{opacity:0;transform:translateY(18px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}html[data-theme="dark"] .hero-visual{animation:roamlyReveal .9s cubic-bezier(.2,.75,.25,1) both}html[data-theme="dark"] .floating-note{animation:roamlyFloat 5s ease-in-out infinite}html[data-theme="dark"] .photo-tag{animation:roamlyFloat 6s ease-in-out infinite reverse}html[data-theme="dark"] .destination-card{animation:roamlyReveal .65s both}html[data-theme="dark"] .destination-card:nth-child(2){animation-delay:.08s}html[data-theme="dark"] .destination-card:nth-child(3){animation-delay:.16s}html[data-theme="dark"] .destination-card:nth-child(4){animation-delay:.24s}html[data-theme="dark"] .destination-image img{filter:saturate(.88) brightness(.9)}html[data-theme="dark"] .destination-card:hover .destination-image img{filter:saturate(1.08) brightness(1.02)}html[data-theme="dark"] .experience-card{box-shadow:0 14px 35px #0002}html[data-theme="dark"] .experience-card img{filter:saturate(.82) brightness(.84)}html[data-theme="dark"] .experience-card:hover img{filter:saturate(1) brightness(.98)}html[data-theme="dark"] .gems-collage img{box-shadow:0 15px 30px #0003;transition:transform .45s cubic-bezier(.2,.75,.25,1),filter .35s}html[data-theme="dark"] .gems-collage img:hover{transform:translateY(-6px) rotate(-1deg);filter:brightness(1.1)}html[data-theme="dark"] .gems-collage .gem-two:hover,html[data-theme="dark"] .gems-collage .gem-four:hover{transform:translateY(9px) rotate(1deg)}html[data-theme="dark"] .button,html[data-theme="dark"] .category-chip,html[data-theme="dark"] .preference-chip,html[data-theme="dark"] .heart-button,html[data-theme="dark"] .chat-launcher,html[data-theme="dark"] .text-link{transition:transform .25s cubic-bezier(.2,.75,.25,1),background .25s,border-color .25s,color .25s,box-shadow .25s}html[data-theme="dark"] .button:hover,html[data-theme="dark"] .category-chip:hover,html[data-theme="dark"] .preference-chip:hover{transform:translateY(-2px)}html[data-theme="dark"] .chat-launcher{animation:roamlyFloat 4.5s ease-in-out infinite}html[data-theme="dark"] .doodle-face{animation:roamlyGlow 3.8s ease-in-out infinite}html[data-theme="dark"] .chat-prompt{animation:promptIn .55s ease both,roamlyFloat 5s ease-in-out 1s infinite}html[data-theme="dark"] .chat-widget{backdrop-filter:blur(18px)}html[data-theme="dark"] ::selection{background:#c8e6a4;color:#17271c}
 @media(max-width:760px){html[data-theme="dark"] .nav-links.nav-links-open{background:#101713;border:1px solid var(--line);border-radius:14px;padding:8px;margin-bottom:10px}html[data-theme="dark"] .gems-panel{background:#202c22}}
 @media(prefers-reduced-motion:reduce){html[data-theme="dark"] .hero-visual,html[data-theme="dark"] .floating-note,html[data-theme="dark"] .photo-tag,html[data-theme="dark"] .destination-card,html[data-theme="dark"] .gems-collage img,html[data-theme="dark"] .chat-launcher,html[data-theme="dark"] .doodle-face,html[data-theme="dark"] .chat-prompt{animation:none!important}}
+
+
+/* Light-mode motion polish and destination discovery galleries */
+.theme-toggle{width:42px;height:42px;padding:0;min-width:42px;border-radius:50%;display:inline-grid;place-items:center}
+.destination-card{animation:roamlyCardEnter .7s cubic-bezier(.2,.75,.25,1) both}
+.destination-card:nth-child(2){animation-delay:.08s}
+.destination-card:nth-child(3){animation-delay:.16s}
+.destination-card:nth-child(4){animation-delay:.24s}
+.hero-visual{animation:roamlyHeroEnter .9s cubic-bezier(.2,.75,.25,1) both}
+.floating-note{animation:roamlyFloat 5s ease-in-out infinite}
+.photo-tag{animation:roamlyFloat 6s ease-in-out infinite reverse}
+.destination-image-button{display:block;width:100%;padding:0;border:0;text-align:left;cursor:zoom-in}
+.destination-image-button img{display:block;will-change:opacity,transform}
+.destination-image-button:focus-visible{outline:3px solid var(--green);outline-offset:-3px}
+.gallery-hint{position:absolute;right:12px;bottom:12px;display:flex;align-items:center;gap:5px;padding:7px 10px;border-radius:100px;background:#172820d9;color:#fff;font-size:.65rem;font-weight:800;opacity:0;transform:translateY(5px);transition:opacity .25s,transform .25s}
+.destination-card:hover .gallery-hint,.destination-image-button:focus-visible .gallery-hint{opacity:1;transform:translateY(0)}
+.destination-image-button .image-mood{bottom:12px}
+.destination-image-button:hover img{filter:saturate(1.08) brightness(1.03)}
+.gallery-backdrop{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:#101713c9;backdrop-filter:blur(12px)}
+.gallery-modal{position:relative;width:min(100%,1000px);max-height:min(92vh,900px);overflow:auto;border:1px solid #ffffff24;border-radius:24px;background:#fffefa;color:#172820;box-shadow:0 35px 100px #0008}
+.gallery-photo{height:min(58vh,560px);min-height:300px;position:relative;overflow:hidden;background:#18221c}
+.gallery-photo>div:first-child{height:100%}
+.gallery-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gallery-photo:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#0008);pointer-events:none}
+.gallery-close{position:absolute;z-index:3;right:14px;top:14px;width:42px;height:42px;display:grid;place-items:center;border:1px solid #ffffff70;border-radius:50%;background:#101713b8;color:#fff;backdrop-filter:blur(10px)}
+.gallery-arrow{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:42px;height:42px;display:grid;place-items:center;border:1px solid #ffffff65;border-radius:50%;background:#101713a8;color:#fff;backdrop-filter:blur(8px);transition:background .2s,transform .2s}
+.gallery-arrow:hover{background:#101713e8;transform:translateY(-50%) scale(1.06)}
+.gallery-prev{left:16px}
+.gallery-next{right:16px}
+.gallery-prev-icon{transform:rotate(135deg)}
+.gallery-photo-count{position:absolute;z-index:2;right:20px;bottom:18px;color:#fff;font-size:.66rem;font-weight:900;letter-spacing:.12em}
+.gallery-details{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:25px 30px 28px}
+.gallery-details .eyebrow{color:#235b45}
+.gallery-details h2{margin:8px 0 5px;font:800 clamp(1.8rem,4vw,2.6rem) var(--font-display);letter-spacing:-.06em}
+.gallery-details p{margin:0;max-width:600px;color:#68776e;line-height:1.65}
+.gallery-dots{display:flex;gap:7px;margin-top:18px}
+.gallery-dots button{width:7px;height:7px;padding:0;border:0;border-radius:20px;background:#c7d0c5;transition:width .25s,background .25s}
+.gallery-dots button.active{width:26px;background:#235b45}
+.gallery-plan{flex-shrink:0}
+@keyframes roamlyCardEnter{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes roamlyHeroEnter{from{opacity:0;transform:translateY(12px) scale(.985);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@media(max-width:700px){.gallery-backdrop{padding:10px}.gallery-modal{border-radius:18px}.gallery-photo{height:48vh;min-height:250px}.gallery-details{align-items:flex-start;flex-direction:column;padding:20px}.gallery-plan{width:100%}.gallery-hint{opacity:1;transform:none}.theme-toggle{width:38px;height:38px;min-width:38px}}
+@media(prefers-reduced-motion:reduce){.destination-card,.hero-visual,.floating-note,.photo-tag{animation:none!important}.gallery-hint,.gallery-arrow{transition:none!important}}
+/* Dark theme variants for gallery surfaces */
+html[data-theme="dark"] .gallery-modal{background:#18221c;color:#f0f1e9;border-color:#344339}
+html[data-theme="dark"] .gallery-details .eyebrow{color:#c6e59e}
+html[data-theme="dark"] .gallery-details p{color:#a2afa5}
+html[data-theme="dark"] .gallery-dots button{background:#46574a}
+html[data-theme="dark"] .gallery-dots button.active{background:#d9f078}
+html[data-theme="dark"] .destination-image-button .gallery-hint{background:#17231ceF}
