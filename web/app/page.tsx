@@ -199,7 +199,7 @@ export default function Home() {
             <a href="#experiences" onClick={() => setMobileMenu(false)}>Experiences</a>
             <a href="#planner" onClick={() => setMobileMenu(false)}>Trip planner</a>
           </nav>
-          <div className="nav-actions"><button className="button button-quiet theme-toggle" onClick={() => setTheme((current) => current === "light" ? "dark" : "light")} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}>{theme === "light" ? <Moon size={17} /> : <Sun size={17} />}</button><button className="button button-quiet" onClick={() => showToast(saved.length ? `You’ve saved ${saved.length} place(s).` : "Save a place with the heart icon to find it here.")}><Bookmark size={15} /> Saved{saved.length ? ` · ${saved.length}` : ""}</button><a className="button button-primary nav-cta" href="#planner">Plan a trip <ArrowUpRight size={16} /></a></div>
+          <div className="nav-actions"><button className="button button-quiet theme-toggle" onClick={() => setTheme((current) => current === "light" ? "dark" : "light")} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}>{theme === "light" ? <Sun size={17} /> : <Moon size={17} />}</button><button className="button button-quiet" onClick={() => showToast(saved.length ? `You’ve saved ${saved.length} place(s).` : "Save a place with the heart icon to find it here.")}><Bookmark size={15} /> Saved{saved.length ? ` · ${saved.length}` : ""}</button><a className="button button-primary nav-cta" href="#planner">Plan a trip <ArrowUpRight size={16} /></a></div>
         </div>
       </header>
 
