@@ -112,7 +112,7 @@ def generate(req: TravelRequest):
         f"Travel style: {req.style}. Preferences: {req.preferences}."
     )
     query += (
-        "\\nReturn exactly the headings SUMMARY:, ITINERARY:, FOOD & CULTURE:, and PRACTICAL TIPS:. "
+        "\nReturn exactly the headings SUMMARY:, ITINERARY:, FOOD & CULTURE:, and PRACTICAL TIPS:. "
         "Under ITINERARY, include one clearly labelled Day 1 through Day " + str(req.days) +
         " with Morning, Afternoon, Evening, and Getting around entries for each day."
     )
