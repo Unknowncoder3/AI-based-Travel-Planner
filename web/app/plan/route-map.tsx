@@ -10,6 +10,9 @@ export type RoutePoint = {
   category?: string;
   description?: string;
   image?: string;
+  image_source_url?: string;
+  image_credit?: string;
+  image_license?: string;
 };
 
 declare global {
