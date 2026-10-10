@@ -25,7 +25,8 @@ export default function PlanPage() {
   const [preferences, setPreferences] = useState<string[]>(["Nature", "Hidden gems"]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [result, setResult] = useState<Record<string, unknown> | null>(null);\n  const [activeDay, setActiveDay] = useState(1);
+  const [result, setResult] = useState<Record<string, unknown> | null>(null);
+  const [activeDay, setActiveDay] = useState(1);
 
   useEffect(() => { const value = new URLSearchParams(window.location.search).get("destination"); if (value) setDestination(value); }, []);
 
