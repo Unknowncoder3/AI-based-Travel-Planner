@@ -36,6 +36,34 @@ def geocode(place: str):
     }
 
 
+@lru_cache(maxsize=1024)
+def commons_photo(place_name: str, destination: str):
+    """Find a photo explicitly associated with this place, never a category stock image."""
+    try:
+        response = requests.get(
+            "https://commons.wikimedia.org/w/api.php",
+            params={
+                "action": "query", "format": "json", "generator": "search",
+                "gsrsearch": f'"{place_name}" "{destination}"',
+                "gsrnamespace": 6, "gsrlimit": 5, "prop": "imageinfo",
+                "iiprop": "url|extmetadata", "iiurlwidth": 900,
+            }, headers=HEADERS, timeout=7,
+        )
+        response.raise_for_status()
+        pages = response.json().get("query", {}).get("pages", {})
+        candidates = list(pages.values())
+        candidates.sort(key=lambda item: (place_name.casefold() not in item.get("title", "").casefold(), destination.casefold() not in item.get("title", "").casefold()))
+        for item in candidates:
+            info = (item.get("imageinfo") or [{}])[0]
+            url = info.get("thumburl") or info.get("url")
+            if not url or not url.lower().split("?")[0].endswith((".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff")):
+                continue
+            meta = info.get("extmetadata", {})
+            return {"image": url, "image_source_url": info.get("descriptionurl"), "image_credit": (meta.get("Artist") or {}).get("value", ""), "image_license": (meta.get("LicenseShortName") or {}).get("value", "")}
+    except (requests.RequestException, ValueError):
+        pass
+    return None
+
 def category_for(tags):
     if tags.get("historic") or tags.get("museum") or tags.get("heritage"):
         return "History & culture"
@@ -86,6 +114,8 @@ def discover(destination: str = Query(min_length=2, max_length=120)):
             image = tags.get("image") or tags.get("wikimedia_commons")
             if image and image.startswith("File:"):
                 image = "https://commons.wikimedia.org/wiki/Special:FilePath/" + quote(image[5:]) + "?width=800"
+            if image and not image.startswith("http"):
+                image = None
             places.append({
                 "id": f'{element.get("type")}:{element.get("id")}',
                 "name": name,
@@ -94,6 +124,9 @@ def discover(destination: str = Query(min_length=2, max_length=120)):
                 "category": category_for(tags),
                 "description": tags.get("description") or tags.get("tourism") or tags.get("historic") or "Local point of interest",
                 "image": image if image and image.startswith("http") else None,
+                "image_source_url": None,
+                "image_credit": "",
+                "image_license": "",
                 "address": ", ".join(filter(None, [tags.get("addr:street"), tags.get("addr:city")])),
                 "opening_hours": tags.get("opening_hours"),
                 "website": tags.get("website") or tags.get("contact:website"),
@@ -101,7 +134,15 @@ def discover(destination: str = Query(min_length=2, max_length=120)):
                 "source": "OpenStreetMap",
             })
         places.sort(key=lambda p: ({"History & culture": 0, "Viewpoint & attraction": 1, "Nature & outdoors": 2, "Cafe & food": 3}.get(p["category"], 4), p["name"].casefold()))
-        return {"destination": destination, "center": center, "places": places[:50], "source": "OpenStreetMap", "note": "Listings and opening hours can be incomplete. Confirm directly before visiting."}
+        places = places[:50]
+        # Resolve missing photos from Commons using exact place and destination names.
+        with ThreadPoolExecutor(max_workers=5) as pool:
+            futures = {pool.submit(commons_photo, place["name"], destination): place for place in places if not place.get("image")}
+            for future, place in futures.items():
+                photo = future.result()
+                if photo:
+                    place.update(photo)
+        return {"destination": destination, "center": center, "places": places, "source": "OpenStreetMap + Wikimedia Commons", "note": "Photos are linked to named places when a matching Commons image is available. Missing photos are not replaced with unrelated stock images. Verify place details before visiting."}
     except HTTPException:
         raise
     except requests.RequestException as exc:
