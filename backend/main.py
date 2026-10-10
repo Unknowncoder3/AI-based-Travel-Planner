@@ -1,4 +1,5 @@
 # backend/main.py
+import os
 import threading
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -7,7 +8,11 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.prompts import PromptTemplate
 from langchain_ollama import OllamaLLM
 
-llm = OllamaLLM(model="mistral")
+llm = OllamaLLM(
+    model=os.getenv("OLLAMA_MODEL", "mistral"),
+    temperature=0.3,
+    num_predict=1000,
+)
 chat_history = ChatMessageHistory()
 history_lock = threading.Lock()
 
@@ -109,10 +114,10 @@ def fallback_itinerary(req):
         )
         itinerary.extend([f"Day {i+1}: {title}", f"Morning: {morning}", f"Afternoon: {afternoon}", f"Evening: {evening}", f"Getting around: {getting}", ""])
     status = (
-        "Destination-aware fallback draft — local AI did not respond in time. "
+        "Destination-aware fallback draft — local AI did not respond before the configured timeout. "
         "Suggestions are planning starting points; verify current access, schedules, weather and prices before booking."
         if is_curated else
-        "General fallback draft — local AI did not respond in time and no curated destination template is available. "
+        "General fallback draft — local AI did not respond before the configured timeout and no curated destination template is available. "
         "Check destination-specific details before booking."
     )
     raw = (
@@ -167,7 +172,7 @@ def generate(req: TravelRequest):
         finally:
             completed.set()
     threading.Thread(target=work, daemon=True).start()
-    if not completed.wait(timeout=45):
+    if not completed.wait(timeout=float(os.getenv("ROAMLY_AI_TIMEOUT_SECONDS", "100"))):
         return fallback_itinerary(req)
     if "error" in result:
         fallback = fallback_itinerary(req)
