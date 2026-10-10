@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, Compass, MapPin, Mountain, Sparkles, Utensils, Wallet, Users, Leaf, Waves, Footprints, Route, Heart, Clock3, Coffee, Camera, TrainFront, BedDouble, Navigation, RotateCcw, Download, Sunrise, Sunset, CloudRain, ShieldCheck } from "lucide-react";\nimport RouteMap, { type RoutePoint } from "./route-map";
