@@ -6,7 +6,9 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, Compass, MapPin, Mountain, Sparkles, Utensils, Wallet, Users, Leaf, Waves, Footprints, Route, Heart, Clock3, Coffee, Camera, TrainFront, BedDouble, Navigation, RotateCcw, Download, Sunrise, Sunset, CloudRain, ShieldCheck, ExternalLink } from "lucide-react";
 import RouteMap, { type RoutePoint } from "./route-map";
 
-const EMPTY_ROUTE: [number, number][] = [];\n\nconst interestOptions = [
+const EMPTY_ROUTE: [number, number][] = [];
+
+const interestOptions = [
   { name: "Nature", icon: Leaf, note: "Forests, viewpoints and scenic trails" },
   { name: "Adventure", icon: Mountain, note: "Outdoor thrills and active days" },
   { name: "Food & culture", icon: Utensils, note: "Local flavours and living heritage" },
