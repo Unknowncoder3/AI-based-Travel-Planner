@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.prompts import PromptTemplate
 from langchain_ollama import OllamaLLM
-from places import router as places_router
+try:\n    from .places import router as places_router\nexcept ImportError:\n    from places import router as places_router
 
 llm = OllamaLLM(
     model=os.getenv("OLLAMA_MODEL", "mistral"),
