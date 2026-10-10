@@ -321,3 +321,12 @@ html[data-theme="dark"] .reminder-icon{background:#293b2d;color:#d9f078}
 html[data-theme="dark"] .itinerary-next-step>div{color:#d9f078}
 @media(max-width:700px){.itinerary-layout{grid-template-columns:1fr}.itinerary-title-row{align-items:start;flex-direction:column}.itinerary-export{align-self:flex-start}.itinerary-next-step{align-items:stretch;flex-direction:column}.itinerary-next-step>button{justify-content:center}.itinerary-success{align-items:flex-start;flex-wrap:wrap}.itinerary-success>div{flex-basis:calc(100% - 50px)}.itinerary-success button{margin-left:40px}.route-preview-top h3{font-size:1.1rem}.route-illustration{padding-inline:7px}.route-illustration svg{min-height:105px}.day-planner-heading{padding-inline:14px}.active-day-card{padding:14px}}
 @media print{.plan-nav,.plan-story,.plan-form-card>form,.plan-footer,.itinerary-success button,.itinerary-export,.itinerary-next-step{display:none!important}.plan-page{padding:0;background:white!important;color:black!important}.plan-layout{display:block;padding:0}.plan-form-card{border:0;box-shadow:none;padding:0}.itinerary-workspace{display:block!important}.route-preview,.day-planner,.trip-snapshot,.generated-notes{break-inside:avoid;background:white!important;color:black!important}.itinerary-layout{grid-template-columns:1.3fr .7fr}.plan-result-section{break-inside:avoid}}
+
+
+/* Destination-specific AI day plan */
+.generated-day-copy{display:grid;gap:0;margin:18px 0}
+.generated-day-copy p{position:relative;margin:0;padding:13px 12px 13px 15px;border-top:1px solid var(--line,#e5e7dc);font-size:.76rem;line-height:1.85;color:var(--muted,#738176);white-space:pre-wrap}
+.generated-day-copy p:first-child{border-top:0}
+.generated-day-copy p::first-line{font-weight:750;color:var(--ink,#172820)}
+html[data-theme="dark"] .generated-day-copy p{border-color:#344339;color:#b4c4b6}
+html[data-theme="dark"] .generated-day-copy p::first-line{color:#f0f1e9}
