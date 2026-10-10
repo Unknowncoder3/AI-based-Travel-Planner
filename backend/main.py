@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.prompts import PromptTemplate
 from langchain_ollama import OllamaLLM
+from places import router as places_router
 
 llm = OllamaLLM(
     model=os.getenv("OLLAMA_MODEL", "mistral"),
@@ -135,6 +136,7 @@ def fallback_itinerary(req):
     return {"raw": raw, "sections": sections, "fallback": True}
 
 app = FastAPI(title="Roamly Travel Planner API")
+app.include_router(places_router, tags=["places", "routes", "weather"])
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
