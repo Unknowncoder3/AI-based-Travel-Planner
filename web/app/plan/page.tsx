@@ -30,7 +30,7 @@ export default function PlanPage() {
   const [activeDay, setActiveDay] = useState(1);
   const [discoveredPlaces, setDiscoveredPlaces] = useState<RoutePoint[]>([]);
   const [placesLoading, setPlacesLoading] = useState(false);
-  const [journeyRoute, setJourneyRoute] = useState<{origin?: RoutePoint; destination?: RoutePoint; route?: [number, number][]; distance_km?: number; duration_hours?: number; note?: string} | null>(null);
+  const [journeyRoute, setJourneyRoute] = useState<{origin?: RoutePoint; destination?: RoutePoint; intermediate_stops?: RoutePoint[]; route?: [number, number][]; distance_km?: number; duration_hours?: number; note?: string} | null>(null);
   const [journeyLoading, setJourneyLoading] = useState(false);
   const [weatherAdvice, setWeatherAdvice] = useState<{forecast?: {date: string; temperature_min_c?: number; temperature_max_c?: number; precipitation_probability_percent?: number; precipitation_mm?: number}[]; safety_links?: {label: string; url: string}[]; note?: string} | null>(null);
   const [weatherLoading, setWeatherLoading] = useState(false);
