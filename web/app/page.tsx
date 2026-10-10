@@ -138,29 +138,45 @@ export default function Home() {
 
   const generatePlan = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!destination.trim()) {
+      setPlannerError("Add a destination first so Roamly can shape your trip.");
+      return;
+    }
     setIsGenerating(true);
     setPlannerError("");
     setPlan(null);
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 65000);
     try {
-      const response = await fetch("http://localhost:8000/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          origin,
-          destination,
-          days: Number.parseInt(days, 10) || 3,
-          style,
-          preferences: preferences.join(", ") + (dates ? ` | Travel dates: ${dates}` : "") + ` | Budget: ${budget} | Travelers: ${travelers}`,
-        }),
-      });
-      if (!response.ok) throw new Error(`Planner API returned ${response.status}. Check that FastAPI is running.`);
+      let response: Response;
+      try {
+        response = await fetch("http://127.0.0.1:8000/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({
+            origin,
+            destination,
+            days: Number.parseInt(days, 10) || 3,
+            style,
+            preferences: preferences.join(", ") + (dates ? ` | Travel dates: ${dates}` : "") + ` | Budget: ${budget} | Travelers: ${travelers}`,
+          }),
+        });
+      } catch (fetchError) {
+        if (fetchError instanceof DOMException && fetchError.name === "AbortError") {
+          throw new Error("The planner request timed out. Restart the backend and check that Ollama is running; Roamly's fallback should normally return within 45 seconds.");
+        }
+        throw new Error("Could not connect to the planner API at 127.0.0.1:8000. Start the backend and keep its terminal open.");
+      }
+      if (!response.ok) throw new Error(`Planner API returned ${response.status}. Check the FastAPI terminal for details.`);
       const data = await response.json();
       setPlan(data.sections ?? data);
-      document.getElementById("itinerary-result")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => document.getElementById("itinerary-result")?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
     } catch (error) {
       setPlannerError(error instanceof Error ? error.message : "Could not reach the planner backend.");
-      showToast("Couldn’t reach the planner backend.");
+      showToast("Couldn’t build the itinerary. Check the message on the form.");
     } finally {
+      window.clearTimeout(timeoutId);
       setIsGenerating(false);
     }
   };
