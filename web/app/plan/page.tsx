@@ -37,10 +37,11 @@ export default function PlanPage() {
   const [weatherLoading, setWeatherLoading] = useState(false);
 
   const dayPlaces = useMemo(() => discoveredPlaces.filter((_, index) => index % Math.max(1, Number(days)) === activeDay - 1).slice(0, 6), [discoveredPlaces, days, activeDay]);
-  const destinationRoutePoints: RoutePoint[] = [
+  const destinationRoutePoints: RoutePoint[] = useMemo(() => [
     ...(journeyRoute?.origin ? [{...journeyRoute.origin, category: "Start"}] : []),
+    ...(journeyRoute?.intermediate_stops || []),
     ...(journeyRoute?.destination ? [{...journeyRoute.destination, category: "Destination"}] : []),
-  ];
+  ], [journeyRoute]);
   const imageForPlace = (place: RoutePoint) => place.image || (
     place.category?.includes("History") ? "https://images.unsplash.com/photo-1566127992631-137a642a90f4?auto=format&fit=crop&w=900&q=80" :
     place.category?.includes("Cafe") ? "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=900&q=80" :
