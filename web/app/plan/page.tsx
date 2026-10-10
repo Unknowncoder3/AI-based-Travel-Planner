@@ -35,7 +35,7 @@ export default function PlanPage() {
   const [weatherAdvice, setWeatherAdvice] = useState<{forecast?: {date: string; temperature_min_c?: number; temperature_max_c?: number; precipitation_probability_percent?: number; precipitation_mm?: number}[]; safety_links?: {label: string; url: string}[]; note?: string} | null>(null);
   const [weatherLoading, setWeatherLoading] = useState(false);
 
-  const dayPlaces = discoveredPlaces.filter((_, index) => index % Math.max(1, Number(days)) === activeDay - 1).slice(0, 6);
+  const dayPlaces = useMemo(() => discoveredPlaces.filter((_, index) => index % Math.max(1, Number(days)) === activeDay - 1).slice(0, 6), [discoveredPlaces, days, activeDay]);
   const destinationRoutePoints: RoutePoint[] = [
     ...(journeyRoute?.origin ? [{...journeyRoute.origin, category: "Start"}] : []),
     ...(journeyRoute?.destination ? [{...journeyRoute.destination, category: "Destination"}] : []),
