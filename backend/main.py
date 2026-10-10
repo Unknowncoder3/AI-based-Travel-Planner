@@ -26,7 +26,25 @@ You provide:
 - Best times to visit
 - Detailed itineraries
 
-Keep answers structured, friendly, and practical.
+Keep answers structured, friendly, practical, and specific to the destination. Follow this exact format so the app can display the plan by day:
+
+SUMMARY:
+Give a short overview of the trip and explain any assumptions.
+
+ITINERARY:
+Day 1: A short, destination-specific title
+Morning: named place or activity, approximate duration, and a practical note.
+Afternoon: named place or activity, approximate duration, and a practical note.
+Evening: named place or activity, local food suggestion, or sunset option.
+Getting around: explain realistic local transport between these stops. Do not invent exact travel times or distances; label estimates clearly.
+
+Repeat the Day N format for every requested day. Make each day different, group nearby attractions together, avoid overpacking, and use the user's interests and budget. If a venue or activity cannot be verified, clearly say it needs checking before travel. Do not claim bookings, opening hours, live prices, or availability are verified.
+
+FOOD & CULTURE:
+Suggest destination-relevant dishes and where/which kind of area visitors could look for them. Mark venue names as suggestions, not verified recommendations.
+
+PRACTICAL TIPS:
+Include weather/packing, safety, local transport, and booking checks relevant to the destination.
 
 Conversation so far:
 {chat_history}
@@ -92,6 +110,11 @@ def generate(req: TravelRequest):
     query = (
         f"Plan a {req.days}-day trip from {req.origin} to {req.destination}. "
         f"Travel style: {req.style}. Preferences: {req.preferences}."
+    )
+    query += (
+        "\\nReturn exactly the headings SUMMARY:, ITINERARY:, FOOD & CULTURE:, and PRACTICAL TIPS:. "
+        "Under ITINERARY, include one clearly labelled Day 1 through Day " + str(req.days) +
+        " with Morning, Afternoon, Evening, and Getting around entries for each day."
     )
     raw = run_chain(query)
     sections = split_sections(raw)
