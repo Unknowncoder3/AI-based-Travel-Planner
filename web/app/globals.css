@@ -246,7 +246,7 @@ html[data-theme="dark"] .plan-error{background:#321e18;border-color:#744434;colo
 .route-preview-top h3{font:800 1.25rem var(--font-display);letter-spacing:-.045em;margin:9px 0 0}
 .route-badge{padding:6px 8px;border:1px solid var(--line,#e5e7dc);border-radius:100px;color:var(--muted,#738176);font-size:.55rem;font-weight:900;letter-spacing:.07em;white-space:nowrap}
 .route-illustration{padding:5px 15px 13px;background-image:radial-gradient(#7c966a22 .8px,transparent .8px);background-size:12px 12px}
-.route-illustration svg{display:block;width:100%;height:auto;min-height:130px;color:#324b37}
+.route-illustration > svg{display:block;width:100%;height:auto;min-height:0;color:#324b37}
 .route-note{display:flex;align-items:flex-start;gap:7px;padding:10px 11px;border-radius:10px;background:#f2f4ec;color:#718071;font-size:.64rem;line-height:1.55}
 .route-note svg{flex-shrink:0;color:#235b45}
 .itinerary-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(190px,.75fr);gap:15px;margin-top:17px;align-items:start}
