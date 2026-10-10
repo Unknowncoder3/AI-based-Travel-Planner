@@ -54,6 +54,9 @@ def commons_photo(place_name: str, destination: str):
         candidates = list(pages.values())
         candidates.sort(key=lambda item: (place_name.casefold() not in item.get("title", "").casefold(), destination.casefold() not in item.get("title", "").casefold()))
         for item in candidates:
+            # Never attach a vaguely related search result to a named attraction.
+            if place_name.casefold() not in item.get("title", "").casefold():
+                continue
             info = (item.get("imageinfo") or [{}])[0]
             url = info.get("thumburl") or info.get("url")
             if not url or not url.lower().split("?")[0].endswith((".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff")):
