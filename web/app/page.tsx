@@ -146,7 +146,7 @@ export default function Home() {
     setPlannerError("");
     setPlan(null);
     const controller = new AbortController();
-    const timeoutId = window.setTimeout(() => controller.abort(), 65000);
+    const timeoutId = window.setTimeout(() => controller.abort(), 115000);
     try {
       let response: Response;
       try {
@@ -164,7 +164,7 @@ export default function Home() {
         });
       } catch (fetchError) {
         if (fetchError instanceof DOMException && fetchError.name === "AbortError") {
-          throw new Error("The planner request timed out. Restart the backend and check that Ollama is running; Roamly's fallback should normally return within 45 seconds.");
+          throw new Error("The planner request timed out. Restart the backend and check that Ollama is running; the backend can take up to 100 seconds before returning its fallback.");
         }
         throw new Error("Could not connect to the planner API at 127.0.0.1:8000. Start the backend and keep its terminal open.");
       }
