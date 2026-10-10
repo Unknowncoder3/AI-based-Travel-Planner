@@ -128,8 +128,30 @@ def journey(origin: str = Query(min_length=2, max_length=120), destination: str 
         line = [[float(lat), float(lon)] for lon, lat in coordinates[::stride]]
         if coordinates and line[-1] != [coordinates[-1][1], coordinates[-1][0]]:
             line.append([coordinates[-1][1], coordinates[-1][0]])
+        # Label two actual points on the road route as intermediate places/towns.
+        # Reverse geocoding is cached by location in Nominatim's service; keep this to two calls.
+        intermediate_stops = []
+        for fraction in (0.33, 0.66):
+            if len(coordinates) < 3:
+                continue
+            idx = min(len(coordinates) - 1, int((len(coordinates) - 1) * fraction))
+            lon, lat = coordinates[idx]
+            try:
+                reverse = requests.get(
+                    "https://nominatim.openstreetmap.org/reverse",
+                    params={"lat": lat, "lon": lon, "format": "jsonv2", "zoom": 10},
+                    headers=HEADERS, timeout=4,
+                )
+                reverse.raise_for_status()
+                label = reverse.json()
+                address = label.get("address", {})
+                town = next((address.get(k) for k in ("town", "city", "village", "municipality", "county", "state_district") if address.get(k)), None)
+                if town and all(stop["name"].casefold() != town.casefold() for stop in intermediate_stops):
+                    intermediate_stops.append({"name": town, "lat": float(lat), "lon": float(lon), "category": "Along your route", "description": "Nearby town/area on the road route; confirm whether it suits your stopover."})
+            except requests.RequestException:
+                continue
         return {
-            "origin": start, "destination": end, "route": line,
+            "origin": start, "destination": end, "route": line, "intermediate_stops": intermediate_stops,
             "distance_km": round(route["distance"] / 1000, 1),
             "duration_hours": round(route["duration"] / 3600, 1),
             "note": "Road-route estimate only; live traffic, closures, transit options and mountain-road conditions are not included.",
