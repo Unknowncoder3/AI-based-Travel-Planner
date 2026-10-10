@@ -44,7 +44,7 @@ def commons_photo(place_name: str, destination: str):
             "https://commons.wikimedia.org/w/api.php",
             params={
                 "action": "query", "format": "json", "generator": "search",
-                "gsrsearch": f'"{place_name}" "{destination}"',
+                "gsrsearch": place_name,
                 "gsrnamespace": 6, "gsrlimit": 5, "prop": "imageinfo",
                 "iiprop": "url|extmetadata", "iiurlwidth": 900,
             }, headers=HEADERS, timeout=7,
