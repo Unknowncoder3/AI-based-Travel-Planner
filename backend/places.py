@@ -199,7 +199,6 @@ def conditions(destination: str = Query(min_length=2, max_length=120)):
             "safety_links": [
                 {"label": "India Meteorological Department (IMD) warnings", "url": "https://mausam.imd.gov.in/"},
                 {"label": "National Disaster Management Authority (NDMA)", "url": "https://ndma.gov.in/"},
-                {"label": "Sikkim State Disaster Management Authority", "url": "https://ssdma.nic.in/"},
             ],
             "note": "Forecasts are not disaster alerts. Check current district-level official warnings and local authority guidance before mountain, river, waterfall or remote-area travel.",
             "source": "Open-Meteo",
