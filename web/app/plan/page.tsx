@@ -1,7 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, Compass, MapPin, Mountain, Sparkles, Utensils, Wallet, Users, Leaf, Waves, Footprints, Route, Heart, Clock3 } from "lucide-react";
@@ -16,10 +15,8 @@ const interestOptions = [
 ];
 
 export default function PlanPage() {
-  const searchParams = useSearchParams();
-  const initialDestination = searchParams.get("destination") ?? "";
   const [origin, setOrigin] = useState("");
-  const [destination, setDestination] = useState(initialDestination);
+  const [destination, setDestination] = useState("");
   const [days, setDays] = useState("5");
   const [dates, setDates] = useState("");
   const [budget, setBudget] = useState("₹10,000–₹20,000");
@@ -29,6 +26,8 @@ export default function PlanPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
+
+  useEffect(() => { const value = new URLSearchParams(window.location.search).get("destination"); if (value) setDestination(value); }, []);
 
   const togglePreference = (name: string) => setPreferences(current => current.includes(name) ? current.filter(item => item !== name) : [...current, name]);
 
