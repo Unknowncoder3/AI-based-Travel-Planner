@@ -109,8 +109,9 @@ def health():
 
 @app.post("/generate")
 def generate(req: TravelRequest):
+    origin = req.origin.strip() or "your starting point"
     query = (
-        f"Plan a {req.days}-day trip from {req.origin or 'the traveler\'s starting point'} to {req.destination}. "
+        f"Plan a {req.days}-day trip from {origin} to {req.destination}. "
         f"Travel style: {req.style}. Interests, dates and budget: {req.preferences}. "
         f"Generate exactly {req.days} distinct days."
     )
