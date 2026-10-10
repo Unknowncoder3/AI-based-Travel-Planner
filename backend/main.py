@@ -116,13 +116,13 @@ def fallback_itinerary(req):
         "Check destination-specific details before booking."
     )
     raw = (
-        f"SUMMARY:\\nA {days}-day starter plan for {destination}, travelling from {origin}. "
+        f"SUMMARY:\nA {days}-day starter plan for {destination}, travelling from {origin}. "
         f"{'This draft uses a basic destination-specific template.' if is_curated else 'This draft uses general planning guidance, not verified destination-specific recommendations.'} "
-        "Confirm details before booking.\\n\\n"
-        "ITINERARY:\\n" + "\\n".join(itinerary) +
-        "\\nFOOD & CULTURE:\\nExplore regional specialties and reputable local eateries; ask about ingredients and dietary needs. "
-        "Venue names, opening hours, and prices have not been live-verified.\\n\\n"
-        "PRACTICAL TIPS:\\nCheck weather, attraction hours, transport schedules, and activity safety before setting out. "
+        "Confirm details before booking.\n\n"
+        "ITINERARY:\n" + "\n".join(itinerary) +
+        "\nFOOD & CULTURE:\nExplore regional specialties and reputable local eateries; ask about ingredients and dietary needs. "
+        "Venue names, opening hours, and prices have not been live-verified.\n\n"
+        "PRACTICAL TIPS:\nCheck weather, attraction hours, transport schedules, and activity safety before setting out. "
         "For adventure activities, use qualified operators and follow local advisories."
     )
     sections = split_sections(raw)
