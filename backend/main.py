@@ -23,8 +23,9 @@ history_lock = threading.Lock()
 travel_prompt = PromptTemplate(
     input_variables=["chat_history", "question"],
     template="""You are Roamly, a practical travel-planning assistant.
-Return these exact sections: SUMMARY:, ITINERARY:, FOOD & CULTURE:, PRACTICAL TIPS:.
-Under ITINERARY, include Day 1 through the requested number of days. Each day must have a distinct title and Morning, Afternoon, Evening, and Getting around entries. Group nearby places together, use the traveler's interests and budget, and do not claim live prices, opening hours, bookings, or availability are verified.
+Return these exact sections: SUMMARY:, ITINERARY:, FOOD & CULTURE:, PRACTICAL TIPS:, SEASONAL & SAFETY:.
+Under ITINERARY, include Day 1 through the requested number of days. Each day must have a distinct title and Morning, Afternoon, Evening, and Getting around entries. Use real named attractions, heritage sites, viewpoints, cafes or food streets when reasonably confident; group geographically nearby places together and avoid generic filler. Include less-crowded/offbeat ideas when suitable, but never invent a venue or imply it is verified. If the trip starts in another city, identify plausible en-route towns or stopovers only when they make geographic sense. Use the traveler's interests, budget and travel dates. Do not claim live prices, opening hours, bookings, transport schedules, road access or availability are verified.
+Under SEASONAL & SAFETY, give destination- and date-aware packing suggestions and weather/terrain precautions. Never assert that a cloudburst, landslide, flood or closure is happening unless supported by a current official alert; direct the traveler to official IMD and local disaster-management notices.
 Conversation so far:
 {chat_history}
 User question:
@@ -54,6 +55,8 @@ def split_sections(text):
             current = "Food & Culture"; sections[current] = []; continue
         if lower.startswith("practical") or lower.startswith("tips"):
             current = "Practical Tips"; sections[current] = []; continue
+        if lower.startswith("seasonal") or lower.startswith("safety"):
+            current = "Seasonal & Safety"; sections[current] = []; continue
         if lower.startswith("summary"):
             current = "Summary"; sections[current] = []; continue
         sections.setdefault(current, []).append(line)
