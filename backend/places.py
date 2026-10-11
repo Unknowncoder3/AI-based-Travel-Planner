@@ -67,6 +67,57 @@ def commons_photo(place_name: str, destination: str):
         pass
     return None
 
+@lru_cache(maxsize=256)
+def destination_photo(destination: str):
+    """Return a Commons image whose file title identifies the destination or a known landmark there."""
+    aliases = {
+        "andaman islands": ("andaman", "havelock", "swaraj dweep", "radhanagar", "shaheed dweep", "neil island", "cellular jail"),
+        "meghalaya": ("meghalaya", "shillong", "sohra", "cherrapunji", "dawki", "living root bridge", "nongriat"),
+        "darjeeling": ("darjeeling", "tiger hill", "batasia loop", "darjeeling himalayan railway"),
+        "jaipur": ("jaipur", "amber fort", "hawa mahal", "jal mahal", "pink city"),
+    }
+    key = destination.casefold().strip()
+    terms = aliases.get(key, (key,))
+    try:
+        response = requests.get(
+            "https://commons.wikimedia.org/w/api.php",
+            params={
+                "action": "query", "format": "json", "generator": "search",
+                "gsrsearch": "filetype:bitmap " + " OR ".join('"' + term + '"' for term in terms[:5]),
+                "gsrnamespace": 6, "gsrlimit": 20, "prop": "imageinfo",
+                "iiprop": "url|extmetadata", "iiurlwidth": 1400,
+            }, headers=HEADERS, timeout=8,
+        )
+        response.raise_for_status()
+        pages = response.json().get("query", {}).get("pages", {})
+        for item in sorted(pages.values(), key=lambda p: (not any(term in p.get("title", "").casefold() for term in terms), p.get("title", ""))):
+            title = item.get("title", "").casefold()
+            if not any(term in title for term in terms):
+                continue
+            info = (item.get("imageinfo") or [{}])[0]
+            url = info.get("thumburl") or info.get("url")
+            if not url or not url.lower().split("?")[0].endswith((".jpg", ".jpeg", ".png", ".webp")):
+                continue
+            meta = info.get("extmetadata", {})
+            matched = next((term for term in terms if term in title), destination)
+            return {
+                "destination": destination, "image": url,
+                "image_source_url": info.get("descriptionurl"),
+                "image_credit": (meta.get("Artist") or {}).get("value", ""),
+                "image_license": (meta.get("LicenseShortName") or {}).get("value", ""),
+                "image_caption": f"Destination-related photo: {matched.title()}",
+            }
+    except (requests.RequestException, ValueError):
+        pass
+    return {"destination": destination, "image": None, "image_source_url": None, "image_credit": "", "image_license": "", "image_caption": None}
+
+
+@router.get("/destination-photo")
+def get_destination_photo(destination: str = Query(min_length=2, max_length=120)):
+    """Fetch a destination-linked hero photo independently from Overpass place discovery."""
+    return destination_photo(destination)
+
+
 def category_for(tags):
     if tags.get("historic") or tags.get("museum") or tags.get("heritage"):
         return "History & culture"
