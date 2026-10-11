@@ -1,101 +1,199 @@
 # backend/main.py
-import io
-import textwrap
+import os
+import threading
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-
-
-# ---- Your existing logic (UNCHANGED) ----
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.prompts import PromptTemplate
 from langchain_ollama import OllamaLLM
+try:
+    from .places import router as places_router
+except ImportError:
+    from places import router as places_router
 
-llm = OllamaLLM(model="mistral")
+llm = OllamaLLM(
+    model=os.getenv("OLLAMA_MODEL", "mistral"),
+    temperature=0.3,
+    num_predict=1000,
+)
 chat_history = ChatMessageHistory()
+history_lock = threading.Lock()
 
 travel_prompt = PromptTemplate(
     input_variables=["chat_history", "question"],
-    template="""
-You are a **Travel Planning AI Assistant**.
-
-You provide:
-- Travel routes & directions
-- Main attractions + hidden gems
-- Local foods & culture info
-- Best times to visit
-- Detailed itineraries
-
-Keep answers structured, friendly, and practical.
-
+    template="""You are Roamly, a practical travel-planning assistant.
+Return these exact sections: SUMMARY:, ITINERARY:, FOOD & CULTURE:, PRACTICAL TIPS:, SEASONAL & SAFETY:.
+Under ITINERARY, include Day 1 through the requested number of days. Each day must have a distinct title and Morning, Afternoon, Evening, and Getting around entries. Never repeat the same generic day template or pad days after Day 5 with 'explore at your own pace'; for trips longer than five days, plan distinct destination-specific excursions, island/area transfers, rest or weather-buffer days, and a useful departure day. Give practical time windows where helpful, explain what the traveler will do and why, mention what needs advance booking, and distinguish estimated durations from confirmed departure times. Use real named attractions, heritage sites, viewpoints, cafes or food streets when reasonably confident; group geographically nearby places together and avoid generic filler. Include less-crowded/offbeat ideas when suitable, but never invent a venue or imply it is verified. If the trip starts in another city, identify plausible en-route towns or stopovers only when they make geographic sense. Use the traveler's interests, budget and travel dates. Do not claim live prices, opening hours, bookings, transport schedules, road access or availability are verified.
+Under SEASONAL & SAFETY, give destination- and date-aware packing suggestions and weather/terrain precautions. Never assert that a cloudburst, landslide, flood or closure is happening unless supported by a current official alert; direct the traveler to official IMD and local disaster-management notices.
 Conversation so far:
 {chat_history}
-
 User question:
 {question}
-
-AI Travel Assistant:
+Roamly:
 """
 )
 
 def run_chain(question):
-    chat_history_text = "\n".join(
-        [f"{msg.type.capitalize()}: {msg.content}" for msg in chat_history.messages]
-    )
-    prompt_text = travel_prompt.format(
-        chat_history=chat_history_text,
-        question=question
-    )
+    with history_lock:
+        history_text = "\n".join(f"{msg.type.capitalize()}: {msg.content}" for msg in chat_history.messages[-8:])
+    prompt_text = travel_prompt.format(chat_history=history_text, question=question)
     response = llm.invoke(prompt_text)
-    chat_history.add_user_message(question)
-    chat_history.add_ai_message(response)
+    with history_lock:
+        chat_history.add_user_message(question)
+        chat_history.add_ai_message(response)
     return response
 
 def split_sections(text):
-    sections = {}
-    lines = text.strip().splitlines()
+    sections = {"Summary": []}
     current = "Summary"
-    sections[current] = []
-    for ln in lines:
-        ln_stripped = ln.strip().lower()
-        if ln_stripped.startswith("itinerary"):
+    for line in text.strip().splitlines():
+        lower = line.strip().lower().rstrip(":")
+        if lower.startswith("itinerary"):
             current = "Itinerary"; sections[current] = []; continue
-        if ln_stripped.startswith("food"):
+        if lower.startswith("food"):
             current = "Food & Culture"; sections[current] = []; continue
-        if ln_stripped.startswith("practical") or ln_stripped.startswith("tips"):
+        if lower.startswith("practical") or lower.startswith("tips"):
             current = "Practical Tips"; sections[current] = []; continue
-        if ln_stripped.startswith("summary"):
+        if lower.startswith("seasonal") or lower.startswith("safety"):
+            current = "Seasonal & Safety"; sections[current] = []; continue
+        if lower.startswith("summary"):
             current = "Summary"; sections[current] = []; continue
-        sections.setdefault(current, []).append(ln)
-    return {k: "\n".join(v).strip() for k, v in sections.items()}
+        sections.setdefault(current, []).append(line)
+    return {key: "\n".join(value).strip() for key, value in sections.items()}
 
-# ---- API Layer (NEW, UI-agnostic) ----
-app = FastAPI()
+def fallback_itinerary(req):
+    """Return a clearly-labelled, destination-aware starter plan when local AI is unavailable."""
+    destination = req.destination.strip()
+    origin = req.origin.strip() or "your starting point"
+    interests = req.preferences
+    days = max(1, min(int(req.days), 14))
+
+    curated = {
+        "darjeeling": [
+            ("Arrive in the hills", "Check in and explore Chowrasta / Mall Road at an easy pace.", "Visit Observatory Hill if time and weather allow.", "Try momos or thukpa at a well-reviewed local eatery.", "Use local taxis for hill roads and confirm fares before setting off."),
+            ("Sunrise and tea country", "Visit Tiger Hill very early for sunrise; mountain views depend on weather and access.", "Explore a tea estate that is open to visitors, and confirm tour times in advance.", "Walk around Batasia Loop and Ghoom area if transport and opening times work.", "Allow extra time for narrow, winding roads and traffic."),
+            ("Toy train and town stories", "Check the current Darjeeling Himalayan Railway schedule and take a ride if available.", "Visit the Himalayan Mountaineering Institute or Padmaja Naidu Himalayan Zoological Park; check current hours.", "Browse local shops and enjoy tea with bakery snacks.", "Buy tickets through official channels where available; verify schedules."),
+            ("A slower nature day", "Choose a short, accessible tea-garden or nature walk with local guidance.", "Visit a monastery or nearby viewpoint based on weather and transport.", "Leave time for a relaxed café stop and local food.", "Avoid isolated trails in poor weather and follow local advice."),
+            ("One last mountain morning", "Have breakfast and revisit a favourite nearby spot.", "Keep the final outing close to your accommodation and pack with enough time.", "Prepare for onward travel.", "Confirm checkout, road conditions and onward transport.")
+        ],
+        "jaipur": [
+            ("Arrive in the Pink City", "Check in and take an easy walk around the old city.", "See the Hawa Mahal exterior and nearby historic streets.", "Try a local Rajasthani meal at a well-reviewed restaurant.", "Use trusted transport and agree on fares before the ride."),
+            ("Forts and royal history", "Start early at Amber Fort; confirm opening hours and access.", "Visit Jal Mahal viewpoint and group nearby stops to reduce travel.", "Explore a local market if time permits.", "Carry water and sun protection; travel times vary with traffic."),
+            ("The historic centre", "Visit City Palace and Jantar Mantar; check current ticketing and hours.", "Explore the Hawa Mahal area and old-city lanes.", "Try pyaaz kachori or another local speciality.", "Check monument rules and use official ticket counters or sites."),
+            ("Crafts and viewpoints", "Browse Johari Bazaar or Bapu Bazaar for crafts.", "Consider a block-printing or craft experience with a reputable operator.", "Visit a public viewpoint such as Nahargarh only after confirming access and timing.", "Agree prices before buying and use trusted transport."),
+            ("A relaxed final day", "Have breakfast and revisit a favourite nearby attraction.", "Choose one remaining stop close to your accommodation.", "Leave time for checkout and departure.", "Confirm onward transport and traffic conditions.")
+        ],
+        "meghalaya": [
+            ("Arrive and settle in", "Arrive via your booked hub and settle in Shillong or your planned base.", "Explore a nearby public area at an easy pace.", "Try a local Khasi meal at a well-reviewed restaurant.", "Allow generous road-transfer time; distances can take longer than expected."),
+            ("Shillong and its viewpoints", "Visit a viewpoint such as Laitlum Canyon only after checking weather and access.", "Explore Shillong's local markets or cultural stops.", "Enjoy local food and an unhurried evening.", "Check conditions with local tourism staff before heading out."),
+            ("Waterfalls and Sohra", "Travel towards Sohra / Cherrapunji with a reliable local driver.", "Visit accessible waterfall viewpoints such as Nohkalikai if open and safe.", "Return before dark where possible.", "Rain can affect visibility, roads and trail access."),
+            ("Root bridges or caves", "Choose a root-bridge hike suited to your fitness and current trail conditions, with a local guide.", "Alternatively, visit an authorised cave tour if conditions and access permit.", "Keep the evening flexible after a full outdoor day.", "Wear grippy footwear and do not enter closed or flooded trails."),
+            ("A slower final day", "Choose a nearby stop based on weather and your departure point.", "Keep the afternoon flexible for the onward journey.", "Pack and prepare for departure.", "Confirm road conditions and transport timing.")
+        ],
+        "andaman islands": [
+            ("Arrive in Sri Vijaya Puram", "12:00–15:00: Arrive, transfer to your stay and check in. Keep this day light if your flight arrives late.", "15:30–17:30: Visit the Marina Park / waterfront area if time, weather and access allow.", "18:00–20:00: Have dinner near your accommodation and prepare ID documents for island transfers.", "Airport-to-hotel transfers are separate from ferry tickets. Keep your first day flexible; don't book a tight same-day onward ferry."),
+            ("Cellular Jail and island history", "08:30–11:30: Visit Cellular Jail; allow time for security, exhibits and the museum rather than rushing through.", "12:00–15:00: Lunch and explore a nearby town market or local museum if open.", "After sunset: Attend the Cellular Jail light-and-sound programme only if it is running and tickets are available for your date.", "Confirm museum and show timings from the official ticket source; these are not included automatically in a trip plan."),
+            ("Transfer to Swaraj Dweep (Havelock)", "Early morning: Take a confirmed ferry from Sri Vijaya Puram to Swaraj Dweep. Select an actual departure from the live operator timetable; plan to reach the terminal 60–90 minutes early.", "After arrival: Transfer to your booked accommodation, check in or leave luggage, and take a relaxed local orientation.", "Late afternoon: Visit a nearby permitted beach only if daylight and sea conditions allow.", "Ferry fare, terminal transfer and accommodation are separate costs. Sailing time and duration vary by operator, date and sea conditions."),
+            ("Radhanagar Beach day", "07:30–09:00: Breakfast and travel to Radhanagar Beach; check local access and swimming advice.", "09:00–12:00: Walk, photograph the shoreline and relax in permitted areas. Swim only where lifeguards and conditions allow.", "15:30–sunset: Return for the sunset window, leaving enough time for the return transfer before local transport becomes limited.", "No water activity is guaranteed or included. Follow beach flags, lifeguard instructions and local restrictions; never swim during warnings."),
+            ("Swaraj Dweep: water activity or slow beach day", "08:00–12:00: If booked, join a licensed snorkelling or diving operator after checking sea conditions, safety briefing, equipment and cancellation terms.", "13:00–15:00: Lunch and rest; keep a buffer after any boat activity.", "15:30–17:30: Choose a permitted nearby beach or a quiet café / local market stop.", "Activity fees, equipment, transfers and photos may cost extra. Do not touch coral or marine wildlife; switch to a land-based day if conditions are poor."),
+            ("Elephant Beach / coastal excursion option", "07:00–08:00: Check in with a licensed boat operator for a pre-booked Elephant Beach trip if boats are operating.", "Morning–early afternoon: Follow the operator's confirmed boat and return time; use this as a flexible activity block rather than a guaranteed schedule.", "After return: Rest, hydrate and have an early dinner.", "Boat access depends on weather, sea conditions, permits and operator decisions. Do not rely on an unconfirmed last boat back."),
+            ("Swaraj Dweep: local life and recovery", "08:30–10:30: Sleep in, have breakfast and explore a nearby village or local shop area respectfully.", "11:00–14:00: Choose a short guided nature walk or a quiet beach that is open to visitors.", "16:00–18:00: Leave a relaxed sunset / photography window and pack for the next transfer.", "Keep this lower-intensity day as a buffer for weather-related changes or activity cancellations."),
+            ("Ferry to Shaheed Dweep (Neil Island)", "Morning: Take a confirmed inter-island sailing from Swaraj Dweep to Shaheed Dweep. Check the live timetable and arrive at the terminal 60–90 minutes before departure.", "After arrival: Transfer to your accommodation and have lunch; then explore a nearby village or waterfront if time remains.", "Before dark: Visit a permitted viewpoint near your stay and confirm the next day's transport.", "Do not assume a daily departure time or ticket availability. Ferry routes and sailing times can change; keep your booking confirmation accessible."),
+            ("Natural Bridge and island viewpoints", "07:00–09:00: Visit the Natural Bridge / coastal rock area only at a safe low-tide window and with local guidance; access may require walking over uneven shore.", "10:00–13:00: Explore a permitted nearby beach or viewpoint, such as Laxmanpur or Bharatpur, based on tide, weather and local advice.", "15:30–sunset: Choose one viewpoint for sunset and return before it gets dark.", "Tide, shoreline access and walking conditions matter. Do not climb rocks, enter restricted zones or approach waves on exposed reef."),
+            ("Shaheed Dweep: beach and village day", "08:00–10:30: Visit a permitted beach such as Bharatpur if open; ask locally about safe swimming and boat activity conditions.", "11:00–14:00: Lunch and a slow village / local produce stop; keep purchases and waste respectful.", "15:30–17:30: Photograph the coast or revisit a favourite accessible spot.", "Avoid trying to fit every beach into one day; local transfers and weather can consume more time than maps suggest."),
+            ("Return to Sri Vijaya Puram", "Morning: Take the pre-booked confirmed ferry from Shaheed Dweep to Sri Vijaya Puram; select a live sailing and keep a buffer for check-in.", "After arrival: Check in near your departure point and leave the afternoon light for a nearby town activity only if the ferry arrives on time.", "Evening: Confirm flight / ship departure details, baggage rules and transfer pickup.", "Avoid booking a flight or mainland ship too close to the inter-island ferry arrival. A delay can cause a missed connection; an overnight buffer is safer."),
+            ("Ross Island / North Bay alternative day", "Morning: Check whether authorised boats are operating for a Ross Island / North Bay excursion and book only through a legitimate operator.", "Late morning–afternoon: Follow the confirmed boat itinerary and return time; if boats are cancelled, substitute a town museum or waterfront visit.", "Evening: Return to your stay and keep the next morning's departure logistics ready.", "Boat tickets, island entry fees, activities and meals are not automatically included. Follow protected-area rules and don't disturb wildlife."),
+            ("Flexible island buffer day", "Morning: Use this as a weather buffer for a missed boat trip, a favourite accessible attraction or a guided local experience.", "Afternoon: Choose one activity only after confirming opening, access and transport; avoid stacking time-sensitive bookings.", "Evening: Reconfirm check-out, airport / harbour transfer and any onward ticket.", "This buffer is intentional: ferries and sea activities can change with weather. Keep receipts and operator contact details."),
+            ("Departure day", "Allow time for breakfast, checkout and a confirmed transfer to the airport or harbour.", "Do not add a distant attraction unless your departure time and local transfer are confirmed with a generous buffer.", "Depart according to your booked ticket; retain ID and booking details until boarding is complete.", "Accommodation checkout, ferry / flight tickets, meals, local transport and activity fees are separate unless your own booking explicitly says otherwise.")
+        ],
+    }
+    key = destination.casefold()
+    plan = next((items for name, items in curated.items() if name in key or key in name), None)
+    is_curated = plan is not None
+    if plan is None:
+        plan = [
+            ("Arrive and get oriented", f"Arrive in {destination}, check in, and get familiar with the area around your stay.", f"Choose a well-known central attraction in {destination}; confirm current opening times before leaving.", "Try a regional dish at a well-reviewed local restaurant.", "Use a reputable taxi, transit service, or local operator; confirm fares first."),
+            ("Explore the highlights", f"Start early at one of {destination}'s best-known sights.", f"Group two nearby attractions or a guided experience in {destination} to avoid unnecessary travel.", "Visit a local market or a scenic public area before dinner.", "Check route conditions and allow buffer time between stops."),
+            ("Nature and local experiences", f"Choose a viewpoint, garden, waterfront, or nature walk suited to {destination}.", f"Explore a cultural site, craft area, or activity aligned with your interests: {interests}.", "Leave time for a relaxed meal and an unhurried neighborhood walk.", "Ask local tourism staff about current access and weather conditions."),
+            ("Hidden corners", f"Ask a trusted local guide about a less-crowded place in {destination} that is open to visitors.", "Choose a short walk, small museum, craft workshop, or local experience.", "Enjoy a public, accessible viewpoint if weather permits.", "Do not enter restricted areas or attempt activities without qualified operators."),
+            ("A slower final day", "Have breakfast and revisit a favourite nearby spot.", "Pick one remaining attraction close to your accommodation.", "Leave enough time to collect bags and prepare for departure.", "Confirm checkout, onward transport, and any ticket requirements.")
+        ]
+    itinerary = []
+    for i in range(days):
+        title, morning, afternoon, evening, getting = plan[i] if i < len(plan) else (
+            f"Explore at your own pace — day {i+1}",
+            f"Choose a suitable attraction in {destination} and confirm today's access.",
+            f"Explore a nearby area matching your interests: {interests}.",
+            "Keep the evening flexible for local food or a relaxed walk.",
+            "Check current local transport, weather, and journey times before setting out."
+        )
+        itinerary.extend([f"Day {i+1}: {title}", f"Morning: {morning}", f"Afternoon: {afternoon}", f"Evening: {evening}", f"Getting around: {getting}", ""])
+    status = (
+        "Destination-aware fallback draft — local AI did not respond before the configured timeout. "
+        "Suggestions are planning starting points; verify current access, schedules, weather and prices before booking."
+        if is_curated else
+        "General fallback draft — local AI did not respond before the configured timeout and no curated destination template is available. "
+        "Check destination-specific details before booking."
+    )
+    raw = (
+        f"SUMMARY:\nA {days}-day starter plan for {destination}, travelling from {origin}. "
+        f"{'This draft uses a basic destination-specific template.' if is_curated else 'This draft uses general planning guidance, not verified destination-specific recommendations.'} "
+        "Confirm details before booking.\n\n"
+        "ITINERARY:\n" + "\n".join(itinerary) +
+        "\nFOOD & CULTURE:\nExplore regional specialties and reputable local eateries; ask about ingredients and dietary needs. "
+        "Venue names, opening hours, and prices have not been live-verified.\n\n"
+        "PRACTICAL TIPS:\nCheck weather, attraction hours, transport schedules, and activity safety before setting out. "
+        "For adventure activities, use qualified operators and follow local advisories."
+    )
+    sections = split_sections(raw)
+    sections["Status"] = status
+    return {"raw": raw, "sections": sections, "fallback": True}
+
+app = FastAPI(title="Roamly Travel Planner API")
+app.include_router(places_router, tags=["places", "routes", "weather"])
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
 class TravelRequest(BaseModel):
-    origin: str
+    origin: str = ""
     destination: str
-    days: int
-    style: str
-    preferences: str
+    days: int = 3
+    style: str = "A little bit of everything"
+    preferences: str = ""
+
+@app.get("/health")
+def health():
+    return {"status": "ok", "service": "roamly-planner"}
 
 @app.post("/generate")
 def generate(req: TravelRequest):
+    origin = req.origin.strip() or "your starting point"
     query = (
-        f"Plan a {req.days}-day trip from {req.origin} to {req.destination}. "
-        f"Travel style: {req.style}. Preferences: {req.preferences}."
+        f"Plan a {req.days}-day trip from {origin} to {req.destination}. "
+        f"Travel style: {req.style}. Interests, dates and budget: {req.preferences}. "
+        f"Generate exactly {req.days} distinct days."
     )
-    raw = run_chain(query)
-    sections = split_sections(raw)
-    return {
-        "raw": raw,
-        "sections": sections
-    }
+    completed = threading.Event()
+    result = {}
+    def work():
+        try:
+            result["text"] = run_chain(query)
+        except Exception as exc:
+            result["error"] = str(exc)
+        finally:
+            completed.set()
+    threading.Thread(target=work, daemon=True).start()
+    if not completed.wait(timeout=float(os.getenv("ROAMLY_AI_TIMEOUT_SECONDS", "100"))):
+        return fallback_itinerary(req)
+    if "error" in result:
+        fallback = fallback_itinerary(req)
+        fallback["sections"]["Status"] = "Fallback itinerary — local AI error: " + result["error"][:240]
+        return fallback
+    raw = result["text"]
+    return {"raw": raw, "sections": split_sections(raw), "fallback": False}
