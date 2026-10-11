@@ -374,3 +374,20 @@ html[data-theme="dark"] .route-map-empty,html[data-theme="dark"] .route-map-load
 html[data-theme="dark"] .seasonal-checklist span,html[data-theme="dark"] .discovered-place-content p{color:#b4c4b6}
 @media(max-width:700px){.real-route-map{padding:12px}.route-map-canvas{height:260px}.place-cards-grid{grid-template-columns:1fr}.discovered-place-card{display:grid;grid-template-columns:110px minmax(0,1fr)}.discovered-place-card>img{height:100%;min-height:145px}.forecast-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.real-route-map-heading{align-items:flex-start;flex-direction:column}.seasonal-advice{padding:12px}}
 @media print{.route-map-canvas{height:240px}.real-route-map{break-inside:avoid}.official-safety-links a{color:black}}
+
+
+/* Verified destination imagery, practical coverage and island transfer guidance */
+.plan-story-image .hero-photo-source{position:absolute;z-index:3;right:12px;top:12px;padding:6px 8px;border-radius:8px;background:rgba(255,254,250,.94);color:#235b45;font-size:.62rem;font-weight:850;text-decoration:none}
+.coverage-panel,.ferry-panel{margin:14px 0;padding:16px;border:1px solid var(--line,#e5e7dc);border-radius:16px;background:var(--surface,#fffefa)}
+.coverage-panel h3,.ferry-panel h3{margin:5px 0 8px;font:800 1rem var(--font-display);letter-spacing:-.035em;color:var(--ink,#172820)}
+.coverage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.coverage-grid article{padding:12px;border-radius:11px;background:#f2f4ec}
+.coverage-grid strong{font-size:.7rem;color:#245a43}
+.coverage-grid p,.ferry-panel p{margin:6px 0 0;color:var(--muted,#738176);font-size:.68rem;line-height:1.7}
+.ferry-links{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.ferry-links a{display:inline-flex;align-items:center;gap:6px;padding:9px 10px;border:1px solid var(--line,#e5e7dc);border-radius:9px;color:#235b45;font-size:.65rem;font-weight:850;text-decoration:none}
+.ferry-panel>small{display:block;color:#829082;font-size:.62rem;line-height:1.65}
+html[data-theme="dark"] .coverage-panel,html[data-theme="dark"] .ferry-panel{background:#18221c;border-color:#344339}
+html[data-theme="dark"] .coverage-panel h3,html[data-theme="dark"] .ferry-panel h3{color:#f0f1e9}
+html[data-theme="dark"] .coverage-grid article{background:#223329}
+@media(max-width:700px){.coverage-grid{grid-template-columns:1fr}.ferry-links{flex-direction:column}.ferry-links a{align-items:flex-start}}
