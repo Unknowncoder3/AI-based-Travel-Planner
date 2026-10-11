@@ -66,17 +66,34 @@ export default function PlanPage() {
   useEffect(() => { const value = new URLSearchParams(window.location.search).get("destination"); if (value) setDestination(value); }, []);
 
   const togglePreference = (name: string) => setPreferences(current => current.includes(name) ? current.filter(item => item !== name) : [...current, name]);
+  // Local models may format headings as "Day 2:", "**Day 2 —**", or "DAY 02 OF 10".
+  // Parse each heading as a section so selecting any day shows that day's actual plan.
   const itineraryText = String(result?.Itinerary ?? result?.itinerary ?? "");
-  const dayPlans = itineraryText
-    .split(/(?=^\s*Day\s+\d+\s*[:—-])/im)
-    .map(part => part.trim())
-    .filter(part => /^Day\s+\d+\s*[:—-]/i.test(part));
+  const normalizedItinerary = itineraryText.replace(/\r/g, "");
+  const dayHeader = /^\s*(?:#{1,6}\s*)?(?:\*\*|__)?Day\s+(\d+)\b(?:\s+of\s+\d+)?\s*(?::|—|–|-|\|)?\s*(.*?)(?:\*\*|__)?\s*$/i;
+  const dayPlans: string[] = [];
+  let currentDayNumber: number | null = null;
+  let currentDayLines: string[] = [];
+  for (const line of normalizedItinerary.split("\n")) {
+    const header = line.match(dayHeader);
+    if (header) {
+      if (currentDayNumber !== null) {
+        dayPlans.push(\`Day \${currentDayNumber}: \${currentDayLines.join("\n").trim()}\`);
+      }
+      currentDayNumber = Number(header[1]);
+      currentDayLines = [header[2].trim()];
+    } else if (currentDayNumber !== null) {
+      currentDayLines.push(line);
+    }
+  }
+  if (currentDayNumber !== null) {
+    dayPlans.push(\`Day \${currentDayNumber}: \${currentDayLines.join("\n").trim()}\`);
+  }
   const activeDayPlan = dayPlans.find(part => {
     const match = part.match(/^Day\s+(\d+)/i);
     return match ? Number(match[1]) === activeDay : false;
   }) ?? "";
-  const activeDayTitle = activeDayPlan.split(/\r?\n/)[0]?.replace(/^Day\s+\d+\s*[:—-]\s*/i, "").trim();
-
+  const activeDayTitle = activeDayPlan.split(/\n/)[0]?.replace(/^Day\s+\d+\s*:\s*/i, "").trim();
 
   async function generatePlan(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
